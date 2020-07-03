@@ -9,16 +9,16 @@
 > - [ ] [Design organization buy-in](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#working-with-design)
 > - [ ] [design.d2l entry](http://design.d2l/)
 > - [ ] [Architectural sign-off](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#web-component-architecture)
-> - [ ] [Continuous integration](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-continuously-with-travis-ci)
+> - [x] [Continuous integration](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-continuously-with-travis-ci)
 > - [ ] [Cross-browser testing](https://github.com/BrightspaceUI/guide/wiki/Testing#cross-browser-testing-with-sauce-labs)
 > - [ ] [Unit tests](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-with-polymer-test) (if applicable)
 > - [ ] [Accessibility tests](https://github.com/BrightspaceUI/guide/wiki/Testing#automated-accessibility-testing-with-axe)
 > - [ ] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
 > - [ ] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
-> - [ ] Demo page
+> - [x] Demo page
 > - [ ] README documentation
 
-LitElement based web component
+The `d2l-labs-list-item-accumulator` element for use with `d2l-list` introduces a card-based item to help users organize in a tactile fashion.
 
 ## Installation
 
@@ -32,10 +32,24 @@ npm install @brightspace-ui-labs/list-item-accumulator
 
 ```html
 <script type="module">
+    import '@brightspace-ui/core/components/list/list.js';
     import '@brightspace-ui-labs/list-item-accumulator/list-item-accumulator.js';
 </script>
-<d2l-labs-list-item-accumulator>My element</d2l-labs-list-item-accumulator>
+
+<d2l-list>
+  <d2l-labs-list-item-accumulator>
+    <img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+    Employee Orientation
+    <div slot="secondary">Course &middot; 33 mins</div>
+    <div slot="supporting-information">Due: 5 days after being assigned</div>
+    <div slot="actions">
+      <d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
+    </div>
+  </d2l-labs-list-item-accumulator>
+</d2l-list>
 ```
+
+This component cannot be used with `d2l-list-item-content`.
 
 **Properties:**
 
