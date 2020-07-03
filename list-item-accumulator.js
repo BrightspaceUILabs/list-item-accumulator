@@ -59,6 +59,7 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 			[slot="content"] {
 				z-index: 2;
 				display: flex;
+				max-height: 5.7rem;
 				min-height: 4.2rem;
 			}
 			[slot="content-action"] {
@@ -70,15 +71,13 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 			[slot="content"] ::slotted([slot="illustration"]) {
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin: 0 0.9rem 0 0;
-				max-height: 5rem;
-				max-width: 8.6rem;
+				max-height: 5.7rem;
+				max-width: 4.2rem;
 				overflow: hidden;
 				border-radius: 6px 0 0 6px;
 			}
 			[slot="content"] ::slotted([slot="supporting-information"]) {
-				color: var(--d2l-color-celestine);
-				font-size: 0.8rem;
+				display: none;
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
 				border-radius: 0 6px 6px 0;
@@ -91,6 +90,7 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 				flex-direction: column;
 				justify-content: center;
 				align-content: center;
+				margin: 0 0 0 0.9rem;
 			}
 			.d2l-list-item-actions-container {
 				padding: 0 0.8rem 0 0;
@@ -98,6 +98,31 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 				flex-direction: column;
 				justify-content: center;
 				text-align: right;
+			}
+
+			@media screen and (min-width: 636px) {
+				[slot="content"] ::slotted([slot="illustration"]) {
+					max-height: 5rem;
+					max-width: 8.6rem;
+				}
+
+				[slot="content"] {
+					min-height: 4.2rem;
+				}
+
+				[slot="content"] ::slotted([slot="supporting-information"]) {
+					color: var(--d2l-color-celestine);
+					font-size: 0.7rem;
+					display: block;
+					height: 1.2rem;
+					overflow: hidden;
+				}
+			}
+
+			@media screen and (min-width: 842px) {
+				[slot="content"] ::slotted([slot="supporting-information"]) {
+					font-size: 0.8rem;
+				}
 			}
 
 			@keyframes showBoxShadowDelay {
@@ -154,7 +179,7 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 					</div>
 				</div>
 				<div class="d2l-list-item-actions-container" slot="actions">
-					<slot name="actions">
+					<slot name="actions"></slot>
 				</div>
 			</d2l-list-item-generic-layout>
 		`;
