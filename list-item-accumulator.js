@@ -1,3 +1,4 @@
+import '@brightspace-ui/core/components/button/button-icon.js';
 import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/list/list-item-generic-layout.js';
 import '@brightspace-ui/core/components/list/list-item-placement-marker.js';
@@ -52,6 +53,7 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 			[slot="outside-control"] {
 				display: flex;
 				z-index: 4;
+				width: 1.4rem;
 			}
 			d2l-list-item-drag-handle {
 				justify-self: middle;
@@ -75,6 +77,7 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 				max-width: 4.2rem;
 				overflow: hidden;
 				border-radius: 6px 0 0 6px;
+				object-fit: cover;
 			}
 			[slot="content"] ::slotted([slot="supporting-information"]) {
 				display: none;
@@ -92,15 +95,25 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 				align-content: center;
 				margin: 0 0 0 0.9rem;
 			}
-			.d2l-list-item-actions-container {
-				padding: 0 0.8rem 0 0;
+			[slot="actions"] {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
-				text-align: right;
+				padding-right: 0.8rem;
+			}
+			.d2l-list-item-actions-container {
+				align-self: flex-start;
+				display: grid;
+				flex-grow: 0;
+				grid-auto-columns: 1fr;
+				grid-auto-flow: column;
 			}
 
 			@media screen and (min-width: 636px) {
+				[slot="outside-control"] {
+					width: 2.1rem;
+				}
+
 				[slot="content"] ::slotted([slot="illustration"]) {
 					max-height: 5rem;
 					max-width: 8.6rem;
@@ -178,8 +191,11 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 						<slot name="supporting-information"></slot>
 					</div>
 				</div>
-				<div class="d2l-list-item-actions-container" slot="actions">
-					<slot name="actions"></slot>
+				<div slot="actions">
+					<div class="d2l-list-item-actions-container">
+						<slot name="primary-action"></slot>
+						<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+					</div>
 				</div>
 			</d2l-list-item-generic-layout>
 		`;
