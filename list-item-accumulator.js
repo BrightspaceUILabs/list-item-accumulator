@@ -1,37 +1,47 @@
 import '@brightspace-ui/core/components/colors/colors.js';
+import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
 import '@brightspace-ui/core/components/list/list-item-generic-layout.js';
 import '@brightspace-ui/core/components/list/list-item-placement-marker.js';
-import '@brightspace-ui/core/components/list/list-item-drag-handle.js';
+import '@brightspace-ui/core/components/menu/menu.js';
+import '@brightspace-ui/core/components/menu/menu-item.js';
 import { bodyCompactStyles, bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-mixin.js';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
-class ListItemAccumulator extends RtlMixin(LitElement) {
+class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			prop1: { type: String },
+			_hovering: { type: Boolean, attribute: '_hovering', reflect: true }
 		};
 	}
 
 	static get styles() {
-		return [ bodySmallStyles, bodyCompactStyles, css`
+		const styles = [ bodySmallStyles, bodyCompactStyles, css`
 			:host {
 				display: block;
-				padding: 0.6rem 0.7rem 0.6rem 0.25rem;
+				padding: 0.6rem 0.7rem;
 				border: 1px solid transparent;
 				border-radius: 6px;
 				position: relative;
 				pointer-events:all;
 			}
-			:host(:hover) {
+			:host([draggable]) {
+				padding: 0.6rem 0.7rem 0.6rem 0.25rem;
+			}
+			:host([_hovering]:not([dragging])) {
 				border-color: var(--d2l-color-mica);
 			}
-			:host(:hover:not([hide-dragger])) .d2l-list-item-drag-shadow {
+			:host([_hovering]:not([hide-dragger]):not([dragging])) .d2l-list-item-drag-shadow {
 				display: block;
 				animation-duration: 2s;
 				animation-name: showBoxShadowDelay;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			}
+			:host([dragging]) d2l-list-item-generic-layout {
+				opacity: 0.3;
 			}
 			.d2l-list-item-drag-shadow {
 				position: absolute;
@@ -70,7 +80,6 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 			[slot="content"] ::slotted([slot="illustration"]) {
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin: 0 0.9rem 0 0;
 				max-height: 5rem;
 				max-width: 8.6rem;
 				overflow: hidden;
@@ -91,13 +100,16 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 				flex-direction: column;
 				justify-content: center;
 				align-content: center;
+				margin-left: 0.9rem;
+			}
+			[slot="actions"] {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
 			}
 			.d2l-list-item-actions-container {
 				padding: 0 0.8rem 0 0;
 				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				text-align: right;
 			}
 
 			@keyframes showBoxShadowDelay {
@@ -111,6 +123,8 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 				}
 			}
 		`];
+		super.styles && styles.unshift(super.styles);
+		return styles;
 	}
 
 	static async getLocalizeResources(langs) {
@@ -130,34 +144,83 @@ class ListItemAccumulator extends RtlMixin(LitElement) {
 		return null;
 	}
 
-	constructor() {
-		super();
-
-		this.prop1 = 'list-item-accumulator';
+	get primaryAction() {
+		const primary = this.shadowRoot.querySelector('slot[name="primary-action"]');
+		if (primary) {
+			const actions = primary.assignedNodes({flatten: true});
+			if (actions) return actions[0];
+		}
+		return null;
 	}
 
+	get secondaryActions() {
+		const primary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
+		if (primary) {
+			const actions = primary.assignedNodes({flatten: true});
+			if (actions) return actions;
+		}
+		return [];
+	}
+
+	get hasActions() {
+		return this.primaryAction || this.secondaryActions.length;
+	}
+
+	firstUpdated(changedProperties) {
+		this.addEventListener('mouseenter', () => this._hovering = true);
+		this.addEventListener('mouseleave', () => this._hovering = false);
+		super.firstUpdated(changedProperties);
+	}
+	// todo: add accessibility options for label
 	render() {
+		const menu = this.draggable || this.hasActions ? html`
+			<d2l-dropdown-more text="Actions">
+				<d2l-dropdown-menu id="dropdown">
+
+				</d2l-dropdown-menu>
+			</d2l-dropdown-more>
+		` : '';
 		return html`
-			<div class="d2l-list-item-drag-shadow"></div>
-			<d2l-list-item-generic-layout>
-				<div slot="outside-control">
-					<d2l-list-item-drag-handle></d2l-list-item-drag-handle>
-				</div>
-				<div slot="outside-control-action"></div>
-				<div slot="content-action"></div>
-				<div slot="content">
-					<slot name="illustration"></slot>
-					<div class="d2l-list-item-main">
-						<slot></slot>
-						<div class="d2l-body-small"><slot name="secondary"></slot></div>
-						<slot name="supporting-information"></slot>
+			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderDropTarget()}
+			<div class="d2l-list-item-drag-image">
+				<div class="d2l-list-item-drag-shadow"></div>
+				<d2l-list-item-generic-layout>
+					${this._renderDragHandle(this._renderOutsideControl)}
+					${this._renderDragTarget(this._renderOutsideControlAction)}
+					<div slot="content-action"></div>
+					<div slot="content">
+						<slot name="illustration"></slot>
+						<div class="d2l-list-item-main">
+							<slot></slot>
+							<div class="d2l-body-small"><slot name="secondary"></slot></div>
+							<slot name="supporting-information"></slot>
+						</div>
 					</div>
-				</div>
-				<div class="d2l-list-item-actions-container" slot="actions">
-					<slot name="actions">
-				</div>
-			</d2l-list-item-generic-layout>
+					<div slot="actions">
+						<div class="d2l-list-item-actions-container">
+							<slot name="primary-action"></slot>
+							<d2l-dropdown-more text="Actions">
+								<d2l-dropdown-menu id="dropdown">
+									<d2l-menu label="Actions for list item">
+										<slot name="secondary-action"></slot>
+									</d2l-menu>
+								</d2l-dropdown-menu>
+							</d2l-dropdown-more>
+						</div>
+					</div>
+				</d2l-list-item-generic-layout>
+			</div>
+			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 		`;
+	}
+
+	_renderOutsideControl(dragHandle) {
+		return html`<div slot="outside-control">${dragHandle}</div>`;
+	}
+
+	_renderOutsideControlAction(dragTarget) {
+		return html`<div slot="outside-control-action">${dragTarget}</div>`;
 	}
 }
 customElements.define('d2l-labs-list-item-accumulator', ListItemAccumulator);

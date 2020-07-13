@@ -16,9 +16,11 @@
 > - [ ] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
 > - [ ] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
 > - [x] Demo page
-> - [ ] README documentation
+> - [x] README documentation
 
 The `d2l-labs-list-item-accumulator` element for use with `d2l-list` introduces a card-based item to help users organize in a tactile fashion.
+
+![alt text](https://github.com/BrightspaceUILabs/list-item-accumulator/raw/master/screenshots/with-illustration.png)
 
 ## Installation
 
@@ -38,24 +40,33 @@ npm install @brightspace-ui-labs/list-item-accumulator
 
 <d2l-list>
   <d2l-labs-list-item-accumulator>
-    <img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+    <img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg">
     Employee Orientation
     <div slot="secondary">Course &middot; 33 mins</div>
     <div slot="supporting-information">Due: 5 days after being assigned</div>
-    <div slot="actions">
-      <d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
-    </div>
+	<d2l-button-icon text="My Button" icon="tier1:search" slot="primary-action"></d2l-button-icon>
+    <d2l-menu-item text="View" slot="secondary-action"></d2l-menu-item>
+    <d2l-menu-item text="Delete" slot="secondary-action"></d2l-menu-item>
   </d2l-labs-list-item-accumulator>
 </d2l-list>
 ```
 
 This component cannot be used with `d2l-list-item-content`.
 
+### Actions
+
+Only one action may be a present as a button outside of the context menu. Use `slot="primary-action"` for this action.
+Secondary actions will be added to the dropdown menu. You may add these to the secondary action slot.
+
+```html
+<d2l-menu-item text="Delete" slot="secondary-action"></d2l-menu-item>
+```
+
 **Properties:**
 
 | Property | Type | Description |
 |--|--|--|
-| | | |
+| `draggable` | `Boolean` | Whether or not the item is draggable |
 
 **Accessibility:**
 

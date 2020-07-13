@@ -20,11 +20,12 @@ env:
   - REPO_NAME=list-item-accumulator
   - OWNER_NAME=BrightspaceUILabs
 deploy:
-  - provider: npm
-    email: d2ltravisdeploy@d2l.com
-    skip_cleanup: true
-    api_key:
-      # d2l-travis-deploy: ...
-    on:
-      tags: true
-      repo: BrightspaceUILabs/list-item-accumulator
+- provider: npm
+  email: d2ltravisdeploy@d2l.com
+  skip_cleanup: true
+  api_key:
+    #272d......8224
+    - secure: EkTO6ZCGVx23bLvNVyVYBlDqc0dpV1cISDY6ONAeh1MrCGqN0c3KMHzZW1PrJkGtFMJ3W+tFv4cqMQI41yIpuGDLw3BQMp2JjJmENNPjvRlwucfDee0wKrpwzF0J1YVoyDgex8dQUNGGF3o9IQCB4fJD3wl9QDXDtItuYL7Ppke/Dq0eN19NiEkSLcmKfKZ/IqS4vROAihcIUozv2i6IbKJehv1G0vtIYIwpbXaC3cSJxHQU1DnlRZ2mTtnH9diqnS6t8TrTLn+KsOZHNEgncQ7A/hj480jts0XK06ROwFcFM/QRbBzKKINys0UiVH6GHSLJ/Ki49A9iywnnOpOX6xI9puRREv26sHyMmw/JJd/sACLGCu2JXgacSBWOgfUC+O0yvkDjiaxiEV2WtH+5XO2w3YQEhFbWDzT76BqMwSv2z5aspoXYFd5gr8rlRlwM/XzOqDB2ZWqiBm5RD+VrVPoKHaBOKIthXQZC/J2nryh4d8hAfG8jRQ2MB1xCxhZNHDA0OFM0MUdWrPaTkv0zxKnOp4TMfRg6FQSNf7InKF6sJfckAOpRhJDX8YMIJZ+AqXhSnRfUEbkp2lRlgKgrs0Cbbar4CpvJOal4DGj64is3x0c3EfaWsYWB9ju4LNVdEbDgRYSRBCJYj5SNy3e9Q5H4+JY55Wbbmy9VrxiedLI=
+  on:
+    tags: true
+    repo: BrightspaceUILabs/list-item-accumulator
