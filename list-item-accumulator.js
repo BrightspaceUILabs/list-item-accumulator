@@ -7,6 +7,7 @@ import '@brightspace-ui/core/components/menu/menu.js';
 import '@brightspace-ui/core/components/menu/menu-item.js';
 import { bodyCompactStyles, bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-mixin.js';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
@@ -15,7 +16,6 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
-			_hovering: { type: Boolean, attribute: '_hovering', reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
@@ -23,10 +23,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 	static get styles() {
 		const styles = [ bodySmallStyles, bodyCompactStyles, css`
 			:host {
-				border: 1px solid transparent;
-				border-radius: 6px;
 				display: block;
-				padding: 0.6rem 0.7rem;
 				pointer-events:all;
 				position: relative;
 			}
@@ -34,20 +31,36 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			:host([_dropdown-open]) {
 				z-index: 10;
 			}
-			:host([draggable]) {
-				padding: 0.6rem 0.7rem 0.6rem 0.25rem;
+			:host([dragging]) d2l-list-item-generic-layout {
+				opacity: 0.3;
 			}
-			:host([_hovering]:not([dragging])) {
+			d2l-list-item-generic-layout {
+
+			}
+			:host([draggable]) .d2l-bordered-container {
+				padding-left: 0.25rem;
+			}
+			.d2l-bordered-container {
+				padding: 0.6rem 0.7rem;
+				border: 1px solid transparent;
+				border-radius: 6px;
+				background: var(--d2l-color-sylvite);
+				transform: rotate(1deg);
+			}
+			.d2l-list-item-drag-image {
+				transform: rotate(-1deg);
+			}
+			:host([draggable]) .d2l-list-item-drag-image {\
+				transform: rotate(-1deg);
+			}
+			:host(:not([dragging])) .d2l-hovering {
 				border-color: var(--d2l-color-mica);
 			}
-			:host([_hovering]:not([hide-dragger]):not([dragging])) .d2l-list-item-drag-shadow {
+			:host(:not([dragging])) .d2l-hovering .d2l-list-item-drag-shadow {
 				display: block;
 				animation-duration: 2s;
 				animation-name: showBoxShadowDelay;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			}
-			:host([dragging]) d2l-list-item-generic-layout {
-				opacity: 0.3;
 			}
 			[slot="outside-control"] {
 				width: 1.4rem;
@@ -100,9 +113,6 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
 				border-radius: 0 6px 6px 0;
-			}
-			.d2l-list-item-drag-image {
-
 			}
 			.d2l-body-small {
 				margin: 0;
@@ -194,36 +204,43 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				</d2l-dropdown-menu>
 			</d2l-dropdown-more>
 		` : '';
+
+		const classes = {
+			'd2l-bordered-container': true,
+			'd2l-hovering': this._hovering
+		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
-				<div class="d2l-list-item-drag-shadow"></div>
-				<d2l-list-item-generic-layout>
-					${this._renderDragHandle(this._renderOutsideControl)}
-					${this._renderDragTarget(this._renderOutsideControlAction)}
-					<div slot="content-action"></div>
-					<div slot="content">
-						<slot name="illustration"></slot>
-						<div class="d2l-list-item-main">
-							<slot></slot>
-							<div class="d2l-body-small"><slot name="secondary"></slot></div>
-							<slot name="supporting-information"></slot>
+				<div class="${classMap(classes)}">
+					<div class="d2l-list-item-drag-shadow"></div>
+					<d2l-list-item-generic-layout>
+						${this._renderDragHandle(this._renderOutsideControl)}
+						${this._renderDragTarget(this._renderOutsideControlAction)}
+						<div slot="content-action"></div>
+						<div slot="content">
+							<slot name="illustration"></slot>
+							<div class="d2l-list-item-main">
+								<slot></slot>
+								<div class="d2l-body-small"><slot name="secondary"></slot></div>
+								<slot name="supporting-information"></slot>
+							</div>
 						</div>
-					</div>
-					<div slot="actions">
-						<div class="d2l-list-item-actions-container">
-							<slot name="primary-action"></slot>
-							<d2l-dropdown-more text="Actions">
-								<d2l-dropdown-menu id="dropdown">
-									<d2l-menu label="Actions for list item">
-										<slot name="secondary-action"></slot>
-									</d2l-menu>
-								</d2l-dropdown-menu>
-							</d2l-dropdown-more>
+						<div slot="actions">
+							<div class="d2l-list-item-actions-container">
+								<slot name="primary-action"></slot>
+								<d2l-dropdown-more text="Actions">
+									<d2l-dropdown-menu id="dropdown">
+										<d2l-menu label="Actions for list item">
+											<slot name="secondary-action"></slot>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
 						</div>
-					</div>
-				</d2l-list-item-generic-layout>
+					</d2l-list-item-generic-layout>
+				</div>
 			</div>
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 		`;
