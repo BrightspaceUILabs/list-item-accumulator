@@ -116,6 +116,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				max-width: 8.6rem;
 				overflow: hidden;
 				border-radius: 6px 0 0 6px;
+				object-fit: cover;
 			}
 			[slot="content"] ::slotted([slot="supporting-information"]) {
 				color: var(--d2l-color-celestine);
