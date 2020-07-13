@@ -16,6 +16,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_hovering: { type: Boolean, attribute: '_hovering', reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
@@ -25,10 +26,10 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			:host {
 				display: block;
 				pointer-events:all;
-				position: relative;
 			}
 			:host([_tooltip-showing]),
-			:host([_dropdown-open]) {
+			:host([_dropdown-open]),
+			:host([_hovering]) {
 				z-index: 10;
 			}
 			:host([dragging]) d2l-list-item-generic-layout {
@@ -46,11 +47,12 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				border-radius: 6px;
 				background: var(--d2l-color-sylvite);
 				transform: rotate(1deg);
+				position: relative;
 			}
 			.d2l-list-item-drag-image {
 				transform: rotate(-1deg);
 			}
-			:host([draggable]) .d2l-list-item-drag-image {\
+			:host([draggable]) .d2l-list-item-drag-image {
 				transform: rotate(-1deg);
 			}
 			:host(:not([dragging])) .d2l-hovering {
