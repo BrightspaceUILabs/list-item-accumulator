@@ -14,19 +14,25 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			_hovering: { type: Boolean, attribute: '_hovering', reflect: true }
+			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_hovering: { type: Boolean, attribute: '_hovering', reflect: true },
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
 
 	static get styles() {
 		const styles = [ bodySmallStyles, bodyCompactStyles, css`
 			:host {
-				display: block;
-				padding: 0.6rem 0.7rem;
 				border: 1px solid transparent;
 				border-radius: 6px;
-				position: relative;
+				display: block;
+				padding: 0.6rem 0.7rem;
 				pointer-events:all;
+				position: relative;
+			}
+			:host([_tooltip-showing]),
+			:host([_dropdown-open]) {
+				z-index: 10;
 			}
 			:host([draggable]) {
 				padding: 0.6rem 0.7rem 0.6rem 0.25rem;
@@ -42,6 +48,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			}
 			:host([dragging]) d2l-list-item-generic-layout {
 				opacity: 0.3;
+			}
+			[slot="outside-control"] {
+				width: 1.4rem;
 			}
 			.d2l-list-item-drag-shadow {
 				position: absolute;
@@ -91,6 +100,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
 				border-radius: 0 6px 6px 0;
+			}
+			.d2l-list-item-drag-image {
+
 			}
 			.d2l-body-small {
 				margin: 0;
@@ -167,8 +179,10 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 	}
 
 	firstUpdated(changedProperties) {
-		this.addEventListener('mouseenter', () => this._hovering = true);
-		this.addEventListener('mouseleave', () => this._hovering = false);
+		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
+		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
+		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
+		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
 		super.firstUpdated(changedProperties);
 	}
 	// todo: add accessibility options for label
