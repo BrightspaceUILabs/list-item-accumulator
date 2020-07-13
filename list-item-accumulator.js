@@ -35,11 +35,12 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			:host([dragging]) d2l-list-item-generic-layout {
 				opacity: 0.3;
 			}
-			d2l-list-item-generic-layout {
-
-			}
 			:host([draggable]) .d2l-bordered-container {
 				padding-left: 0.25rem;
+			}
+			:host([draggable][dir="rtl"]) .d2l-bordered-container {
+				padding-right: 0.25rem;
+				padding-left: 0.7rem;
 			}
 			.d2l-bordered-container {
 				padding: 0.6rem 0.7rem;
@@ -126,14 +127,22 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				align-content: center;
 				margin-left: 0.9rem;
 			}
+			:host([dir="rtl"]) .d2l-list-item-main {
+				margin-left: 0;
+				margin-right: 0.9rem;
+			}
 			[slot="actions"] {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 			}
 			.d2l-list-item-actions-container {
-				padding: 0 0.8rem 0 0;
+				margin-right: 0.8rem;
 				display: flex;
+			}
+			:host([dir="rtl"]) .d2l-list-item-actions-container {
+				margin-left: 0.8rem;
+				margin-right: 0;
 			}
 
 			@keyframes showBoxShadowDelay {
