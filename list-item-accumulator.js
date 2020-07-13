@@ -8,6 +8,7 @@ import '@brightspace-ui/core/components/menu/menu-item.js';
 import { bodyCompactStyles, bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-mixin.js';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
@@ -15,6 +16,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			secondaryActions: { type: Array },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hovering: { type: Boolean, attribute: '_hovering', reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
@@ -28,9 +30,11 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				pointer-events:all;
 			}
 			:host([_tooltip-showing]),
-			:host([_dropdown-open]),
-			:host([_hovering]) {
+			:host([_dropdown-open]){
 				z-index: 10;
+			}
+			:host([_hovering]){
+				z-index: 9;
 			}
 			:host([dragging]) d2l-list-item-generic-layout {
 				opacity: 0.3;
@@ -39,8 +43,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				padding-left: 0.25rem;
 			}
 			:host([draggable][dir="rtl"]) .d2l-bordered-container {
-				padding-right: 0.25rem;
-				padding-left: 0.7rem;
+				padding-left: 0.6rem 0.25rem 0.7rem 0.6rem;
 			}
 			.d2l-bordered-container {
 				padding: 0.6rem 0.7rem;
@@ -79,6 +82,10 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				pointer-events: none;
 			}
 			:host([hidden]) {
+				display: none;
+			}
+
+			.d2l-hidden {
 				display: none;
 			}
 			[slot="outside-control-action"] {
@@ -177,7 +184,14 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 		return null;
 	}
 
-	get primaryAction() {
+	constructor() {
+		super();
+		this._dropdownId = getUniqueId();
+		this.primaryAction = null;
+		this.secondaryActions = [];
+	}
+
+	getSlottedPrimaryAction() {
 		const primary = this.shadowRoot.querySelector('slot[name="primary-action"]');
 		if (primary) {
 			const actions = primary.assignedNodes({flatten: true});
@@ -186,11 +200,11 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 		return null;
 	}
 
-	get secondaryActions() {
-		const primary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
-		if (primary) {
-			const actions = primary.assignedNodes({flatten: true});
-			if (actions) return actions;
+	getSlottedSecondaryActions() {
+		const secondary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
+		if (secondary) {
+			const actions = secondary.assignedNodes({flatten: true});
+			if (actions) this.secondaryActions = actions;
 		}
 		return [];
 	}
@@ -204,21 +218,18 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
 		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
 		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
+		this.getSlottedSecondaryActions();
 		super.firstUpdated(changedProperties);
 	}
 	// todo: add accessibility options for label
 	render() {
-		const menu = this.draggable || this.hasActions ? html`
-			<d2l-dropdown-more text="Actions">
-				<d2l-dropdown-menu id="dropdown">
-
-				</d2l-dropdown-menu>
-			</d2l-dropdown-more>
-		` : '';
 
 		const classes = {
 			'd2l-bordered-container': true,
 			'd2l-hovering': this._hovering
+		};
+		const dropdownClasses = {
+			'd2l-hidden': !this.secondaryActions.length
 		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -241,9 +252,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 						<div slot="actions">
 							<div class="d2l-list-item-actions-container">
 								<slot name="primary-action"></slot>
-								<d2l-dropdown-more text="Actions">
-									<d2l-dropdown-menu id="dropdown">
-										<d2l-menu label="Actions for list item">
+								<d2l-dropdown-more text="Actions" class="${classMap(dropdownClasses)}">
+									<d2l-dropdown-menu id="${this._dropdownId}">
+										<d2l-menu label="Secondary actions">
 											<slot name="secondary-action"></slot>
 										</d2l-menu>
 									</d2l-dropdown-menu>
