@@ -5,7 +5,7 @@ import '@brightspace-ui/core/components/list/list-item-generic-layout.js';
 import '@brightspace-ui/core/components/list/list-item-placement-marker.js';
 import '@brightspace-ui/core/components/menu/menu.js';
 import '@brightspace-ui/core/components/menu/menu-item.js';
-import { bodyCompactStyles, bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -17,15 +17,15 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			secondaryActions: { type: Array },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_hasSecondaryActions: { type: Boolean },
 			_hovering: { type: Boolean, attribute: '_hovering', reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
 
 	static get styles() {
-		const styles = [ bodySmallStyles, bodyCompactStyles, css`
+		const styles = [ bodyStandardStyles, bodySmallStyles, bodyCompactStyles, css`
 			:host {
 				display: block;
 				pointer-events:all;
@@ -113,15 +113,15 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			[slot="content"] ::slotted([slot="illustration"]) {
 				flex-grow: 0;
 				flex-shrink: 0;
-				max-height: 5rem;
-				max-width: 8.6rem;
+				max-height: 5.7rem;
+				max-width: 4.2rem;
 				overflow: hidden;
 				border-radius: 6px 0 0 6px;
 				object-fit: cover;
 			}
-			[slot="content"] ::slotted([slot="supporting-information"]) {
+			[slot="content"] ::slotted([slot="supporting-info"]) {
 				color: var(--d2l-color-celestine);
-				font-size: 0.8rem;
+
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
 				border-radius: 0 6px 6px 0;
@@ -135,6 +135,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				flex-direction: column;
 				justify-content: center;
 				margin-left: 0.9rem;
+				padding: 0.4rem 0;
 			}
 			:host([dir="rtl"]) .d2l-list-item-main {
 				margin-left: 0;
@@ -164,6 +165,24 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 					box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 				}
 			}
+
+			@media screen and (min-width: 636px) {
+
+				[slot="content"] ::slotted([slot="illustration"]) {
+					max-height: 5rem;
+					max-width: 8.6rem;
+				}
+
+				[slot="content"] {
+					min-height: 4.2rem;
+				}
+
+				[slot="content"] ::slotted([slot="supporting-info"]) {
+					color: var(--d2l-color-celestine);
+					height: 1.2rem;
+					overflow: hidden;
+				}
+			}
 		`];
 		super.styles && styles.unshift(super.styles);
 		return styles;
@@ -189,30 +208,8 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this._dropdownId = getUniqueId();
-		this.primaryAction = null;
-		this.secondaryActions = [];
-	}
-
-	getSlottedPrimaryAction() {
-		const primary = this.shadowRoot.querySelector('slot[name="primary-action"]');
-		if (primary) {
-			const actions = primary.assignedNodes({flatten: true});
-			if (actions) return actions[0];
-		}
-		return null;
-	}
-
-	getSlottedSecondaryActions() {
-		const secondary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
-		if (secondary) {
-			const actions = secondary.assignedNodes({flatten: true});
-			if (actions) this.secondaryActions = actions;
-		}
-		return [];
-	}
-
-	get hasActions() {
-		return this.primaryAction || this.secondaryActions.length;
+		this._primaryAction = null;
+		this._hasSecondaryActions = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -220,7 +217,8 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
 		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
 		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
-		this.getSlottedSecondaryActions();
+		this._getActions();
+
 		super.firstUpdated(changedProperties);
 	}
 	// todo: add accessibility options for label
@@ -230,12 +228,18 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			<d2l-menu-item text="Move Up" @click="${this._onClickMoveUp}"></d2l-menu-item>
 			<d2l-menu-item text="Move Down" @click="${this._onClickMoveDown}"></d2l-menu-item>
 		` : nothing;
+		const mobilePrimaryAction = this._primaryAction ? html`
+			<d2l-menu-item
+				class="d2l-primary-action-mobile"
+				text="${this._primaryAction.text}"
+				@click="${this._primaryAction.click}"></d2l-menu-item>
+		` : nothing;
 		const classes = {
 			'd2l-bordered-container': true,
 			'd2l-hovering': this._hovering
 		};
 		const dropdownClasses = {
-			'd2l-hidden': !this.secondaryActions.length && !this.draggable
+			'd2l-hidden': !this._hasSecondaryActions && !this.draggable
 		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -250,9 +254,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 						<div slot="content">
 							<slot name="illustration"></slot>
 							<div class="d2l-list-item-main">
-								<slot></slot>
+								<div class="d2l-body-standard"><slot></slot></div>
 								<div class="d2l-body-small"><slot name="secondary"></slot></div>
-								<slot name="supporting-information"></slot>
+								<div class="d2l-body-compact"><slot name="supporting-info"></slot></div>
 							</div>
 						</div>
 						<div slot="actions">
@@ -261,6 +265,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 								<d2l-dropdown-more text="Actions" class="${classMap(dropdownClasses)}">
 									<d2l-dropdown-menu id="${this._dropdownId}">
 										<d2l-menu label="Secondary actions">
+											${mobilePrimaryAction}
 											<slot name="secondary-action"></slot>
 											${reorderActions}
 										</d2l-menu>
@@ -273,6 +278,27 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			</div>
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 		`;
+	}
+
+	_getActions() {
+		this._getSlottedPrimaryAction();
+		this._getSlottedSecondaryActions();
+	}
+
+	_getSlottedPrimaryAction() {
+		const primary = this.shadowRoot.querySelector('slot[name="primary-action"]');
+		if (primary) {
+			const actions = primary.assignedNodes({flatten: true});
+			if (actions) this._primaryAction = actions[0];
+		}
+	}
+
+	_getSlottedSecondaryActions() {
+		const secondary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
+		if (secondary) {
+			const actions = secondary.assignedNodes({flatten: true});
+			if (actions) this._hasSecondaryActions = true;
+		}
 	}
 
 	_onClickMoveDown() {

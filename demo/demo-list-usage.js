@@ -81,7 +81,7 @@ class DemoAccumulatorUsage extends LitElement {
 						<img slot="illustration" src="${item.img}">
 						<div>${item.name}</div>
 						<div slot="secondary">${item.secondary}</div>
-						${item.supporting ? html`<div slot="supporting-information">${item.supporting}</div>` : nothing }
+						${item.supporting ? html`<div slot="supporting-info">${item.supporting}</div>` : nothing }
 					</d2l-labs-list-item-accumulator>
 				`)}
 			</d2l-list>
