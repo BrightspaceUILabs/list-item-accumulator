@@ -20,7 +20,7 @@
 
 The `d2l-labs-list-item-accumulator` element for use with `d2l-list` introduces a card-based item to help users organize in a tactile fashion.
 
-![Example of draggable item](https://github.com/BrightspaceUILabs/list-item-accumulator/raw/master/screenshots/draggable-dragging.png)
+![Example of draggable item](https://raw.githubusercontent.com/BrightspaceUILabs/list-item-accumulator/zina/add-drag/screenshots/draggable-dragging.png)
 
 ## Installation
 
