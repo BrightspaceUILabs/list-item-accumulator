@@ -9,7 +9,7 @@ class DemoAccumulatorUsage extends LitElement {
 	static get properties() {
 		return {
 			list: { type: Array }
-		}
+		};
 	}
 
 	static get styles() {

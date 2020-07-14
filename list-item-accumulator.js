@@ -7,7 +7,7 @@ import '@brightspace-ui/core/components/menu/menu.js';
 import '@brightspace-ui/core/components/menu/menu-item.js';
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-mixin.js';
+import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { nothing } from 'lit-html';
@@ -90,6 +90,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				display: none;
 			}
 			[slot="outside-control-action"] {
+				margin: -0.6rem -0.25rem -0.7rem -0.6rem;
 				z-index: 3;
 			}
 			[slot="outside-control"] {
@@ -154,6 +155,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				margin-left: 0.8rem;
 				margin-right: 0;
 			}
+			::slotted([slot="primary-action"]) {
+				display: none;
+			}
 
 			@keyframes showBoxShadowDelay {
 				0%, 85% {
@@ -166,7 +170,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 				}
 			}
 
-			@media screen and (min-width: 636px) {
+			@media screen and (min-width: 615px) {
 
 				[slot="content"] ::slotted([slot="illustration"]) {
 					max-height: 5rem;
@@ -181,6 +185,15 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 					color: var(--d2l-color-celestine);
 					height: 1.2rem;
 					overflow: hidden;
+				}
+				.d2l-primary-action-mobile {
+					display: none;
+				}
+				::slotted(d2l-menu-item[slot="secondary-action"]:not(:hover):first-of-type) {
+					border-top-color: transparent;
+				}
+				::slotted([slot="primary-action"]) {
+					display: inline-block;
 				}
 			}
 		`];
@@ -209,7 +222,6 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 		super();
 		this._dropdownId = getUniqueId();
 		this._primaryAction = null;
-		this._hasSecondaryActions = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -221,7 +233,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 
 		super.firstUpdated(changedProperties);
 	}
-	// todo: add accessibility options for label
+
 	// todo: translations
 	render() {
 		const reorderActions = this.draggable ? html`
@@ -232,7 +244,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 			<d2l-menu-item
 				class="d2l-primary-action-mobile"
 				text="${this._primaryAction.text}"
-				@click="${this._primaryAction.click}"></d2l-menu-item>
+				@click="${this._onClickPrimaryMenuItem}"></d2l-menu-item>
 		` : nothing;
 		const classes = {
 			'd2l-bordered-container': true,
@@ -297,7 +309,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 		const secondary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
 		if (secondary) {
 			const actions = secondary.assignedNodes({flatten: true});
-			if (actions) this._hasSecondaryActions = true;
+			if (actions.length) this._hasSecondaryActions = true;
 		}
 	}
 
@@ -307,6 +319,10 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 
 	_onClickMoveUp() {
 		this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
+	}
+
+	_onClickPrimaryMenuItem() {
+		this._primaryAction.click();
 	}
 
 	_renderOutsideControl(dragHandle) {
