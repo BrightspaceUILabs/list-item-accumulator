@@ -24,7 +24,7 @@
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "devDependencies": {
     "@brightspace-ui/visual-diff": "^1",
     "@open-wc/testing": "^2",
