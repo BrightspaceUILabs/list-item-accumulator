@@ -5,7 +5,9 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '@brightspace-ui/core/components/demo/demo-page.js';
+			import '@brightspace-ui/core/components/menu/menu-item.js';
 			import '../list-item-accumulator.js';
+			import './demo-list-usage.js';
 		</script>
 		<title>d2l-labs-list-item-accumulator</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,27 +22,25 @@
 	</head>
 	<body>
 		<d2l-demo-page page-title="d2l-labs-list-item-accumulator">
+
 			<h2>Basic list accumulator</h2>
 			<d2l-demo-snippet>
 				<template>
 					<div class="d2l-background-mica">
 					<d2l-list>
 						<d2l-labs-list-item-accumulator>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
 							Employee Orientation
 							<div slot="secondary">Course &middot; 33 mins</div>
-							<div slot="supporting-information">Due: 5 days after being assigned</div>
+							<div slot="supporting-info">Due: 5 days after being assigned</div>
 							<div slot="actions">
 								<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
 							</div>
 						</d2l-labs-list-item-accumulator>
 						<d2l-labs-list-item-accumulator>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
 							Content
 							<div slot="secondary">Course &middot; 33 mins</div>
 						</d2l-labs-list-item-accumulator>
 						<d2l-labs-list-item-accumulator>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
 							Content
 							<div slot="secondary">Course &middot; 33 mins</div>
 						</d2l-labs-list-item-accumulator>
@@ -52,27 +52,37 @@
 			<h2>List accumulator (with illustration)</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-list>
-						<d2l-labs-list-item-accumulator></d2l-labs-list-item-accumulator>
-					</d2l-list>
+					<div class="d2l-background-mica">
+						<d2l-list>
+							<d2l-labs-list-item-accumulator>
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg">
+								Employee Orientation
+								<div slot="secondary">Course &middot; 33 mins</div>
+								<div slot="supporting-info">Due: 5 days after being assigned</div>
+								<d2l-button-icon onclick="alert('foo')" text="My Button" icon="tier1:search" slot="primary-action"></d2l-button-icon>
+								<d2l-menu-item text="Delete" slot="secondary-action"></d2l-menu-item>
+							</d2l-labs-list-item-accumulator>
+							<d2l-labs-list-item-accumulator>
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg">
+								Content
+								<div slot="secondary">Course &middot; 33 mins</div>
+								<d2l-menu-item text="Delete" slot="secondary-action"></d2l-menu-item>
+							</d2l-labs-list-item-accumulator>
+							<d2l-labs-list-item-accumulator>
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg">
+								Content
+								<div slot="secondary">Course &middot; 33 mins</div>
+								<d2l-menu-item text="Delete" slot="secondary-action"></d2l-menu-item>
+							</d2l-labs-list-item-accumulator>
+						</d2l-list>
+					</div>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>List accumulator (draggable)</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-list>
-						<d2l-labs-list-item-accumulator></d2l-labs-list-item-accumulator>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List accumulator (draggable with actions)</h2>
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-labs-list-item-accumulator></d2l-labs-list-item-accumulator>
-					</d2l-list>
+					<d2l-demo-list-accumulator-usage></d2l-demo-list-accumulator-usage>
 				</template>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
