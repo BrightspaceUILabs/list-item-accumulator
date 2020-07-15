@@ -21,7 +21,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 		return {
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hasSecondaryActions: { type: Boolean },
-			_hovering: { type: Boolean, attribute: '_hovering', reflect: true },
+			_hovering: { type: Boolean, reflect: true },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
