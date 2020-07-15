@@ -10,12 +10,10 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
-import { langResources } from './lang';
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { nothing } from 'lit-html';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
-class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(LitElement))) {
+class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -204,6 +202,10 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 	}
 
 	static async getLocalizeResources(langs) {
+		const langResources = {
+			'en': { 'myLangTerm': 'I am a localized string!' }
+		};
+
 		for (let i = 0; i < langs.length; i++) {
 			if (langResources[langs[i]]) {
 				return {
@@ -235,8 +237,8 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 	// todo: translations
 	render() {
 		const reorderActions = this.draggable ? html`
-			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}"></d2l-menu-item>
-			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}"></d2l-menu-item>
+			<d2l-menu-item text="Move Up" @click="${this._onClickMoveUp}"></d2l-menu-item>
+			<d2l-menu-item text="Move Down" @click="${this._onClickMoveDown}"></d2l-menu-item>
 		` : nothing;
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
@@ -272,9 +274,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 						<div slot="actions">
 							<div class="d2l-list-item-actions-container">
 								<slot name="primary-action"></slot>
-								<d2l-dropdown-more text="${this.localize('actions')}" class="${classMap(dropdownClasses)}">
+								<d2l-dropdown-more text="Actions" class="${classMap(dropdownClasses)}">
 									<d2l-dropdown-menu id="${this._dropdownId}">
-										<d2l-menu label="${this.localize('secondaryActions')}">
+										<d2l-menu label="Secondary actions">
 											${mobilePrimaryAction}
 											<slot name="secondary-action"></slot>
 											${reorderActions}
