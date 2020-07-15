@@ -6,7 +6,8 @@
     "access": "public"
   },
   "files": [
-    "list-item-accumulator.js"
+    "list-item-accumulator.js",
+    "/lang"
   ],
   "scripts": {
     "lint": "npm run lint:eslint && npm run lint:lit",
