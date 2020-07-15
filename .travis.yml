@@ -18,7 +18,7 @@ after_success:
 - frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
 env:
   global:
-  - SAUCE_USERNAME: Desire2Learn
+  - SAUCE_USERNAME: D2L_Stardust_UX_Chapter
   - REPO_NAME=list-item-accumulator
   - OWNER_NAME=BrightspaceUILabs
   # sauce access key
