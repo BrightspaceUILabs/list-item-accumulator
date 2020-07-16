@@ -20,7 +20,6 @@ const keyCodes = Object.freeze({
 	SPACE: 32
 });
 
-
 class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(LitElement))) {
 
 	static get properties() {
@@ -329,11 +328,11 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 	}
 
 	_onKeyDownMoveDown(e) {
-		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftDown);;
+		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
 	}
 
 	_onKeyDownMoveUp(e) {
-		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftUp);;
+		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
 	}
 
 	_renderOutsideControl(dragHandle) {
