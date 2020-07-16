@@ -49,7 +49,6 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 				padding: 0.6rem 0.25rem 0.7rem 0.6rem;
 			}
 			.d2l-bordered-container {
-				background: var(--d2l-color-sylvite);
 				border: 1px solid transparent;
 				border-radius: 6px;
 				padding: 0.6rem 0.7rem;
