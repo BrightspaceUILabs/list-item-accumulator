@@ -15,6 +15,12 @@ import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { nothing } from 'lit-html';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
+const keyCodes = Object.freeze({
+	ENTER: 13,
+	SPACE: 32
+});
+
+
 class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(LitElement))) {
 
 	static get properties() {
@@ -234,8 +240,8 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 	// todo: translations
 	render() {
 		const reorderActions = this.draggable ? html`
-			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}"></d2l-menu-item>
-			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}"></d2l-menu-item>
+			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}" @keydown="${this._onKeyDownMoveUp}"></d2l-menu-item>
+			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}" @keydown="${this._onKeyDownMoveDown}"></d2l-menu-item>
 		` : nothing;
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
@@ -320,6 +326,14 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 
 	_onClickPrimaryMenuItem() {
 		this._primaryAction.click();
+	}
+
+	_onKeyDownMoveDown(e) {
+		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftDown);;
+	}
+
+	_onKeyDownMoveUp(e) {
+		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftUp);;
 	}
 
 	_renderOutsideControl(dragHandle) {
