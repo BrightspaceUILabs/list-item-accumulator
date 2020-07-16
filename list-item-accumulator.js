@@ -11,11 +11,12 @@ import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/compon
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { langResources } from './lang';
+import { ListItemRoleMixin } from '@brightspace-ui/core/components/list//list-item-role-mixin.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { nothing } from 'lit-html';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
-class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(LitElement))) {
+class ListItemAccumulator extends ListItemRoleMixin(ListItemDragDropMixin(RtlMixin(LocalizeMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -256,7 +257,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 			<div class="d2l-list-item-drag-image">
 				<div class="${classMap(classes)}">
 					<div class="d2l-list-item-drag-shadow"></div>
-					<d2l-list-item-generic-layout>
+					<d2l-list-item-generic-layout ?grid-active="${this.role === 'rowgroup'}">
 						${this._renderDragHandle(this._renderOutsideControl)}
 						${this._renderDragTarget(this._renderOutsideControlAction)}
 						<div slot="content-action"></div>
