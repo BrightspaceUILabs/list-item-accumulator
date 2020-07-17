@@ -73,7 +73,7 @@ class DemoAccumulatorUsage extends LitElement {
 
 	render() {
 		return html`
-			<d2l-list ?grid="${this.grid}" @d2l-list-item-position-change="${this._moveItems}">
+			<d2l-list @d2l-list-item-position-change="${this._moveItems}">
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-labs-list-item-accumulator key="${ifDefined(item.key)}" draggable="true">
 						<img slot="illustration" src="${item.img}">
