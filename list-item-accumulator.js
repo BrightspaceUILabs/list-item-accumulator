@@ -236,12 +236,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 		super.firstUpdated(changedProperties);
 	}
 
-	// todo: translations
 	render() {
-		const reorderActions = this.draggable ? html`
-			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}" @keydown="${this._onKeyDownMoveUp}"></d2l-menu-item>
-			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}" @keydown="${this._onKeyDownMoveDown}"></d2l-menu-item>
-		` : nothing;
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
 				class="d2l-primary-action-mobile"
@@ -253,7 +248,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 			'd2l-hovering': this._hovering
 		};
 		const dropdownClasses = {
-			'd2l-hidden': !this._hasSecondaryActions && !this.draggable
+			'd2l-hidden':
+				(!this._hasSecondaryActions && !this.draggable) ||
+				(!this.nextElementSibling && !this.previousElementSibling && !this._hasSecondaryActions) // only child
 		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -281,7 +278,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 										<d2l-menu label="${this.localize('secondaryActions')}">
 											${mobilePrimaryAction}
 											<slot name="secondary-action"></slot>
-											${reorderActions}
+											${this._renderReorderActions()}
 										</d2l-menu>
 									</d2l-dropdown-menu>
 								</d2l-dropdown-more>
@@ -337,6 +334,22 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 
 	_renderOutsideControl(dragHandle) {
 		return html`<div slot="outside-control">${dragHandle}</div>`;
+	}
+
+	_renderReorderActions() {
+		if (!this.draggable) return nothing;
+		// if direction is up and this is the first item, don't render up
+		const upAction = this.previousElementSibling ? html`
+			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}" @keydown="${this._onKeyDownMoveUp}"></d2l-menu-item>
+			` : nothing;
+		// if direction is down and this is the last item, don't render down
+		const downAction = this.nextElementSibling ? html`
+			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}" @keydown="${this._onKeyDownMoveDown}"></d2l-menu-item>
+			` : nothing;
+		return html`
+			${upAction}
+			${downAction}
+		`;
 	}
 
 	_renderOutsideControlAction(dragTarget) {
