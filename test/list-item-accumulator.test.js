@@ -20,9 +20,9 @@ describe('d2l-labs-list-item-accumulator', () => {
 	describe('reorder actions', () => {
 		const basicList = html`
 		<div>
-			<d2l-labs-list-item-accumulator draggable key="1"></d2l-labs-list-item-accumulator>
-			<d2l-labs-list-item-accumulator draggable key="2"></d2l-labs-list-item-accumulator>
-			<d2l-labs-list-item-accumulator draggable key="3"></d2l-labs-list-item-accumulator>
+			<d2l-labs-list-item-accumulator draggable="true" key="1"></d2l-labs-list-item-accumulator>
+			<d2l-labs-list-item-accumulator draggable="true" key="2"></d2l-labs-list-item-accumulator>
+			<d2l-labs-list-item-accumulator draggable="true" key="3"></d2l-labs-list-item-accumulator>
 		</div>`;
 
 		it('should only show "Move Down" when first item', async() => {
@@ -49,7 +49,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 		});
 
 		it('should show no actions when only item in list', async() => {
-			const el = await fixture(html`<div><d2l-labs-list-item-accumulator draggable key="1"></d2l-labs-list-item-accumulator></div>`);
+			const el = await fixture(html`<div><d2l-labs-list-item-accumulator draggable="true" key="1"></d2l-labs-list-item-accumulator></div>`);
 			expect(el.firstElementChild.shadowRoot.querySelector('d2l-menu-item')).to.be.null;
 		});
 	});
