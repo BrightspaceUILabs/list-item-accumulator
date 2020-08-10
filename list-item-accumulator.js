@@ -233,6 +233,11 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 		super.firstUpdated(changedProperties);
 	}
 
+	get isOnlyChild() {
+		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
+		return nodes.length ? nodes[0] === this : false;
+	}
+
 	render() {
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
@@ -247,7 +252,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 		const dropdownClasses = {
 			'd2l-hidden':
 				(!this._hasSecondaryActions && !this.draggable) ||
-				(!this.nextElementSibling && !this.previousElementSibling && !this._hasSecondaryActions) // only child
+				(this.isOnlyChild && !this._hasSecondaryActions)
 		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
