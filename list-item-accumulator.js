@@ -195,9 +195,6 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 				.d2l-primary-action-mobile {
 					display: none;
 				}
-				::slotted(d2l-menu-item[slot="secondary-action"]:not(:hover):first-of-type) {
-					border-top-color: transparent;
-				}
 				::slotted([slot="primary-action"]) {
 					display: inline-block;
 				}
@@ -277,8 +274,8 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 									<d2l-dropdown-menu id="${this._dropdownId}">
 										<d2l-menu label="${this.localize('secondaryActions')}">
 											${mobilePrimaryAction}
-											<slot name="secondary-action"></slot>
 											${this._renderReorderActions()}
+											<slot name="secondary-action"></slot>
 										</d2l-menu>
 									</d2l-dropdown-menu>
 								</d2l-dropdown-more>

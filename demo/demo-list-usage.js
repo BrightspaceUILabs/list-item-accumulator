@@ -1,5 +1,6 @@
 import '../list-item-accumulator.js';
 import '@brightspace-ui/core/components/list/list.js';
+import '@brightspace-ui/core/components/menu/menu-item.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { nothing } from 'lit-html';
@@ -80,6 +81,7 @@ class DemoAccumulatorUsage extends LitElement {
 						<div>${item.name}</div>
 						<div slot="secondary">${item.secondary}</div>
 						${item.supporting ? html`<div slot="supporting-info">${item.supporting}</div>` : nothing }
+						<d2l-menu-item slot="secondary-action" text="Remove"></d2l-menu-item>
 					</d2l-labs-list-item-accumulator>
 				`)}
 			</d2l-list>
