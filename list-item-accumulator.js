@@ -235,7 +235,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 
 	get isOnlyChild() {
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
-		return nodes.length ? nodes[0] === this : false;
+		return nodes.length === 1 ? nodes[0] === this : false;
 	}
 
 	render() {
