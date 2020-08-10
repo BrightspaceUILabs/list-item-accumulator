@@ -48,7 +48,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			expect(items).to.have.lengthOf(2);
 		});
 
-		it('should show no actions when only item in list', async() =>{
+		it('should show no actions when only item in list', async() => {
 			const el = await fixture(html`<div><d2l-labs-list-item-accumulator draggable key="1"></d2l-labs-list-item-accumulator></div>`);
 			expect(el.firstElementChild.shadowRoot.querySelector('d2l-menu-item')).to.be.null;
 		});
