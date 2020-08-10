@@ -335,12 +335,13 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 
 	_renderReorderActions() {
 		if (!this.draggable) return nothing;
+		const parent = this.parentNode;
 		// if direction is up and this is the first item, don't render up
-		const upAction = this.previousElementSibling ? html`
+		const upAction = parent.querySelector('d2l-labs-list-item-accumulator:first-of-type') !== this ? html`
 			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}" @keydown="${this._onKeyDownMoveUp}"></d2l-menu-item>
 			` : nothing;
 		// if direction is down and this is the last item, don't render down
-		const downAction = this.nextElementSibling ? html`
+		const downAction = parent.querySelector('d2l-labs-list-item-accumulator:last-of-type') !== this ? html`
 			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}" @keydown="${this._onKeyDownMoveDown}"></d2l-menu-item>
 			` : nothing;
 		return html`
