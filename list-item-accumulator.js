@@ -195,9 +195,6 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 				.d2l-primary-action-mobile {
 					display: none;
 				}
-				::slotted(d2l-menu-item[slot="secondary-action"]:not(:hover):first-of-type) {
-					border-top-color: transparent;
-				}
 				::slotted([slot="primary-action"]) {
 					display: inline-block;
 				}
@@ -236,12 +233,12 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 		super.firstUpdated(changedProperties);
 	}
 
-	// todo: translations
+	get isOnlyChild() {
+		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
+		return nodes.length === 1 ? nodes[0] === this : false;
+	}
+
 	render() {
-		const reorderActions = this.draggable ? html`
-			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}" @keydown="${this._onKeyDownMoveUp}"></d2l-menu-item>
-			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}" @keydown="${this._onKeyDownMoveDown}"></d2l-menu-item>
-		` : nothing;
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
 				class="d2l-primary-action-mobile"
@@ -253,7 +250,9 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 			'd2l-hovering': this._hovering
 		};
 		const dropdownClasses = {
-			'd2l-hidden': !this._hasSecondaryActions && !this.draggable
+			'd2l-hidden':
+				(!this._hasSecondaryActions && !this.draggable) ||
+				(this.isOnlyChild && !this._hasSecondaryActions)
 		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -280,8 +279,8 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 									<d2l-dropdown-menu id="${this._dropdownId}">
 										<d2l-menu label="${this.localize('secondaryActions')}">
 											${mobilePrimaryAction}
+											${this._renderReorderActions()}
 											<slot name="secondary-action"></slot>
-											${reorderActions}
 										</d2l-menu>
 									</d2l-dropdown-menu>
 								</d2l-dropdown-more>
@@ -337,6 +336,23 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 
 	_renderOutsideControl(dragHandle) {
 		return html`<div slot="outside-control">${dragHandle}</div>`;
+	}
+
+	_renderReorderActions() {
+		if (!this.draggable) return nothing;
+		const parent = this.parentNode;
+		// if direction is up and this is the first item, don't render up
+		const upAction = parent.querySelector('d2l-labs-list-item-accumulator:first-of-type') !== this ? html`
+			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}" @keydown="${this._onKeyDownMoveUp}"></d2l-menu-item>
+			` : nothing;
+		// if direction is down and this is the last item, don't render down
+		const downAction = parent.querySelector('d2l-labs-list-item-accumulator:last-of-type') !== this ? html`
+			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}" @keydown="${this._onKeyDownMoveDown}"></d2l-menu-item>
+			` : nothing;
+		return html`
+			${upAction}
+			${downAction}
+		`;
 	}
 
 	_renderOutsideControlAction(dragTarget) {
