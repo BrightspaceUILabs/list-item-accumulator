@@ -67,7 +67,7 @@ class ListItemAccumulator extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(L
 				transform: rotate(-1deg);
 			}
 			:host(:not([dragging])) .d2l-hovering {
-				border-color: var(--d2l-color-mica);
+				border-color: var(--d2l-color-chromite);
 			}
 			:host(:not([dragging])) .d2l-hovering .d2l-list-item-drag-shadow {
 				animation-duration: 2s;
