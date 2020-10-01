@@ -226,7 +226,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
 		return nodes.length === 1 ? nodes[0] === this : false;
 	}
-	_renderListItem(illustration, main, secondary, supportingInfo) {
+	_renderListItem({illustration, title, secondary, supportingInfo, primaryAction, secondaryAction} = {}) {
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
 				class="d2l-primary-action-mobile"
@@ -255,20 +255,20 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 						<div slot="content">
 							<slot name="illustration" class="d2l-activitiy-collection-list-item-illustration">${illustration}</slot>
 							<div class="d2l-list-item-main">
-								<slot class="d2l-body-standard">${main}</slot>
+								<slot class="d2l-body-standard">${title}</slot>
 								<slot class="d2l-body-small" name="secondary">${secondary}</slot>
 								<slot class="d2l-body-compact" name="supporting-info">${supportingInfo}</slot>
 							</div>
 						</div>
 						<div slot="actions">
 							<div class="d2l-list-item-actions-container">
-								<slot name="primary-action"></slot>
+								<slot name="primary-action">${primaryAction}</slot>
 								<d2l-dropdown-more text="${this.localize('actions')}" class="${classMap(dropdownClasses)}">
 									<d2l-dropdown-menu id="${this._dropdownId}">
 										<d2l-menu label="${this.localize('secondaryActions')}">
 											${mobilePrimaryAction}
 											${this._renderReorderActions()}
-											<slot name="secondary-action"></slot>
+											<slot name="secondary-action">${secondaryAction}</slot>
 										</d2l-menu>
 									</d2l-dropdown-menu>
 								</d2l-dropdown-more>
