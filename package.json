@@ -7,6 +7,7 @@
   },
   "files": [
     "list-item-accumulator.js",
+    "list-item-accumulator-mixin.js",
     "/lang"
   ],
   "scripts": {
