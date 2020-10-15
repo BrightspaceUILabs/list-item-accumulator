@@ -112,7 +112,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				z-index: 1;
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
-			.d2l-activitiy-collection-list-item-illustration * {
+			.d2l-list-item-accumulator-illustration * {
 				flex-grow: 0;
 				flex-shrink: 0;
 				max-height: 5.7rem;
@@ -125,14 +125,13 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				color: var(--d2l-color-celestine);
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-activitiy-collection-list-item-illustration * {
+			:host([dir="rtl"]) .d2l-list-item-accumulator-illustration * {
 				border-radius: 0 6px 6px 0;
 			}
-			:host([dir="rtl"]) .d2l-activitiy-collection-list-item-illustration *
 			.d2l-body-small {
 				margin: 0;
 			}
-			.d2l-activitiy-collection-list-item-illustration {
+			.d2l-list-item-accumulator-illustration {
                 display: grid;
                 grid-template-areas: only-one;
                 grid-template-columns: 100%;
@@ -179,7 +178,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			}
 			@media screen and (min-width: 615px) {
 				[slot="content"] ::slotted([slot="illustration"]),
-				.d2l-activitiy-collection-list-item-illustration * {
+				.d2l-list-item-accumulator-illustration * {
 					max-height: 5rem;
 					max-width: 8.6rem;
 				}
@@ -257,7 +256,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 						${this._renderDragTarget(this._renderOutsideControlAction)}
 						<div slot="content-action"></div>
 						<div slot="content">
-							<slot name="illustration" class="d2l-activitiy-collection-list-item-illustration">${illustration}</slot>
+							<slot name="illustration" class="d2l-list-item-accumulator-illustration">${illustration}</slot>
 							<div class="d2l-list-item-main">
 								<slot class="d2l-body-standard">${title}</slot>
 								<slot class="d2l-body-small" name="secondary">${secondary}</slot>
