@@ -131,13 +131,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			.d2l-body-small {
 				margin: 0;
 			}
-			.d2l-list-item-accumulator-illustration {
-                display: grid;
-                grid-template-areas: only-one;
-                grid-template-columns: 100%;
-                grid-template-rows: 100%;
-                position: relative;
-            }
 			.d2l-list-item-main {
 				align-content: center;
 				display: flex;
