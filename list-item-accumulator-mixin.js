@@ -111,7 +111,8 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				border-radius: 6px;
 				z-index: 1;
 			}
-			[slot="content"] ::slotted([slot="illustration"]) {
+			[slot="content"] ::slotted([slot="illustration"]),
+			.d2l-activitiy-collection-list-item-illustration * {
 				flex-grow: 0;
 				flex-shrink: 0;
 				max-height: 5.7rem;
@@ -123,9 +124,11 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			[slot="content"] ::slotted([slot="supporting-info"]) {
 				color: var(--d2l-color-celestine);
 			}
-			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-activitiy-collection-list-item-illustration * {
 				border-radius: 0 6px 6px 0;
 			}
+			:host([dir="rtl"]) .d2l-activitiy-collection-list-item-illustration *
 			.d2l-body-small {
 				margin: 0;
 			}
@@ -175,7 +178,8 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				}
 			}
 			@media screen and (min-width: 615px) {
-				[slot="content"] ::slotted([slot="illustration"]) {
+				[slot="content"] ::slotted([slot="illustration"]),
+				.d2l-activitiy-collection-list-item-illustration * {
 					max-height: 5rem;
 					max-width: 8.6rem;
 				}
