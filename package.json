@@ -39,7 +39,7 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "karma-sauce-launcher": "^4.1.4",
+    "karma-sauce-launcher": "^2",
     "lit-analyzer": "^1",
     "puppeteer": "^4"
   },
