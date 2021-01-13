@@ -32,6 +32,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			:host {
 				display: block;
 				pointer-events:all;
+				margin: -0.4rem 0;
 			}
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]){
@@ -116,7 +117,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			.d2l-list-item-accumulator-illustration * {
 				flex-grow: 0;
 				flex-shrink: 0;
-				max-height: 5.7rem;
+				max-height: 6rem;
 				width: 4.2rem;
 				overflow: hidden;
 				border-radius: 6px 0 0 6px;
@@ -173,7 +174,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			@media screen and (min-width: 615px) {
 				[slot="content"] ::slotted([slot="illustration"]),
 				.d2l-list-item-accumulator-illustration * {
-					max-height: 5rem;
+					height: 4.5rem;
 					width: 8.6rem;
 				}
 				[slot="content"] {
