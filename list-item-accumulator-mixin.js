@@ -108,6 +108,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			}
 			[slot="content-action"] {
 				background: white;
+				border: 1px solid var(--d2l-color-mica);
 				border-radius: 6px;
 				z-index: 1;
 			}
