@@ -60,6 +60,12 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			.d2l-list-item-drag-image {
 				transform: rotate(-1deg);
 			}
+			.d2l-list-item-accumulator-top-marker {
+				margin-top: 0.2rem;
+			}
+			.d2l-list-item-accumulator-bottom-marker {
+				margin-top: -0.8rem;
+			}
 			:host([draggable]) .d2l-list-item-drag-image {
 				transform: rotate(-1deg);
 			}
@@ -241,7 +247,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				(this.isOnlyChild && !this._hasSecondaryActions)
 		};
 		return html`
-			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker class="d2l-list-item-accumulator-top-marker"></d2l-list-item-placement-marker>`)}
 			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<div class="${classMap(classes)}">
@@ -275,7 +281,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 					</d2l-list-item-generic-layout>
 				</div>
 			</div>
-			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker class="d2l-list-item-accumulator-bottom-marker"></d2l-list-item-placement-marker>`)}
 		`;
 	}
 	_getActions() {
