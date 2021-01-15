@@ -216,6 +216,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 	constructor() {
 		super();
 		this._dropdownId = getUniqueId();
+		this._dropdownButtonId = getUniqueId();
 		this._primaryAction = null;
 	}
 	firstUpdated(changedProperties) {
@@ -266,13 +267,15 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 						</div>
 						<div slot="actions">
 							<div class="d2l-list-item-actions-container">
-								<slot name="primary-action">${primaryAction}</slot>
-								<d2l-dropdown-more text="${this.localize('actions')}" class="${classMap(dropdownClasses)}">
+								<slot name="primary-action"></slot>
+								${primaryAction}
+								<d2l-dropdown-more id="${this._dropdownButtonId}" text="${this.localize('actions')}" class="${classMap(dropdownClasses)}">
 									<d2l-dropdown-menu id="${this._dropdownId}">
 										<d2l-menu label="${this.localize('secondaryActions')}">
 											${mobilePrimaryAction}
 											${this._renderReorderActions()}
-											<slot name="secondary-action">${secondaryAction}</slot>
+											<slot name="secondary-action"></slot>
+											${secondaryAction}
 										</d2l-menu>
 									</d2l-dropdown-menu>
 								</d2l-dropdown-more>
@@ -293,6 +296,8 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		if (primary) {
 			const actions = primary.assignedNodes({flatten: true});
 			if (actions) this._primaryAction = actions[0];
+		} else if (primary.nextElementSibling.id === this._dropdownButtonId) {
+			this._primaryAction = primary.nextElementSibling;
 		}
 	}
 	_getSlottedSecondaryActions() {
@@ -300,6 +305,8 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		if (secondary) {
 			const actions = secondary.assignedNodes({flatten: true});
 			if (actions.length) this._hasSecondaryActions = true;
+		} else if (secondary.nextElementSibling) {
+			this._hasSecondaryActions = true;
 		}
 	}
 	_onClickMoveDown() {
@@ -324,11 +331,11 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		if (!this.draggable) return nothing;
 		const parent = this.parentNode;
 		// if direction is up and this is the first item, don't render up
-		const upAction = parent.querySelector('d2l-labs-list-item-accumulator:first-of-type') !== this ? html`
+		const upAction = parent.querySelector(`${this.tagName}:first-of-type`) !== this ? html`
 			<d2l-menu-item text="${this.localize('moveUp')}" @click="${this._onClickMoveUp}" @keydown="${this._onKeyDownMoveUp}"></d2l-menu-item>
 			` : nothing;
 		// if direction is down and this is the last item, don't render down
-		const downAction = parent.querySelector('d2l-labs-list-item-accumulator:last-of-type') !== this ? html`
+		const downAction = parent.querySelector(`${this.tagName}:last-of-type`) !== this ? html`
 			<d2l-menu-item text="${this.localize('moveDown')}" @click="${this._onClickMoveDown}" @keydown="${this._onKeyDownMoveDown}"></d2l-menu-item>
 			` : nothing;
 		return html`
