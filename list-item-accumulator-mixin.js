@@ -310,20 +310,25 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		}
 	}
 	_onClickMoveDown() {
-		this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+		this._onMoveAction(dropLocation.shiftDown);
 	}
 	_onClickMoveUp() {
-		this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
+		this._onMoveAction(dropLocation.shiftUp);
 	}
 	_onClickPrimaryMenuItem() {
 		this._primaryAction.click();
 	}
 	_onKeyDownMoveDown(e) {
-		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftDown);
 	}
 	_onKeyDownMoveUp(e) {
-		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
+		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftUp);
 	}
+	async _onMoveAction(action) {
+		await this._annoucePositionChange(this.key, null, action);
+		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
+	}
+
 	_renderOutsideControl(dragHandle) {
 		return html`<div slot="outside-control">${dragHandle}</div>`;
 	}
