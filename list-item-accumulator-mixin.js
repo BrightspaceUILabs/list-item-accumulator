@@ -228,6 +228,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		super.firstUpdated(changedProperties);
 	}
 	get isOnlyChild() {
+		if (!this.parentNode) return nothing;
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
 		return nodes.length === 1 ? nodes[0] === this : false;
 	}
@@ -339,7 +340,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		return html`<div slot="outside-control">${dragHandle}</div>`;
 	}
 	_renderReorderActions() {
-		if (!this.draggable) return nothing;
+		if (!this.draggable || !this.parentNode) return nothing;
 		const parent = this.parentNode;
 		// if direction is up and this is the first item, don't render up
 		const upAction = parent.querySelector(`${this.tagName}:first-of-type`) !== this ? html`
