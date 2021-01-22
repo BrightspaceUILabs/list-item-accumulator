@@ -318,8 +318,13 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 	_onClickPrimaryMenuItem() {
 		this._primaryAction.click();
 	}
-	_onKeyDownMoveDown(e) {
-		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+	async _onKeyDownMoveDown(e) {
+		if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
+			await this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+
+			this.shadowRoot.getElementById(this._dropdownButtonId).focus();
+		}
+		return false;
 	}
 	_onKeyDownMoveUp(e) {
 		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
