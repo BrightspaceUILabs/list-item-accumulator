@@ -332,9 +332,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		}
 	}
 
-	_afterHeyDownFocus(){
-		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
-	}
 	_renderOutsideControl(dragHandle) {
 		return html`<div slot="outside-control">${dragHandle}</div>`;
 	}
