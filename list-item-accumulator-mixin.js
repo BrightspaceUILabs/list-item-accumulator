@@ -310,26 +310,23 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		}
 	}
 	_onClickMoveDown() {
-		this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+		this._onMoveAction(dropLocation.shiftDown);
 	}
 	_onClickMoveUp() {
-		this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
+		this._onMoveAction(dropLocation.shiftUp);
 	}
 	_onClickPrimaryMenuItem() {
 		this._primaryAction.click();
 	}
-	async _onKeyDownMoveDown(e) {
-		this._onKeyDownAction(e, dropLocation.shiftDown);
+	_onKeyDownMoveDown(e) {
+		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftDown);
 	}
 	_onKeyDownMoveUp(e) {
-		this._onKeyDownAction(e, dropLocation.shiftUp);
+		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftUp);
 	}
-	async _onKeyDownAction(e, action) {
-		if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
-			await this._annoucePositionChange(this.key, null, action);
-
-			this.shadowRoot.getElementById(this._dropdownButtonId).focus();
-		}
+	async _onMoveAction(action) {
+		await this._annoucePositionChange(this.key, null, action);
+		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
 	}
 
 	_renderOutsideControl(dragHandle) {
