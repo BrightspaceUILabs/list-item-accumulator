@@ -322,9 +322,8 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 	_onKeyDownMoveDown(e) {
 		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
 	}
-
-	_afterHeyDownFocus(){
-		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
+	_onKeyDownMoveUp(e) {
+		return (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
 	}
 	_renderOutsideControl(dragHandle) {
 		return html`<div slot="outside-control">${dragHandle}</div>`;
