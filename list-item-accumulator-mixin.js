@@ -254,7 +254,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			<div class="d2l-list-item-drag-image">
 				<div class="${classMap(classes)}">
 					<div class="d2l-list-item-drag-shadow"></div>
-					<d2l-list-item-generic-layout @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">
+					<d2l-list-item-generic-layout>
 						${this._renderDragHandle(this._renderOutsideControl.bind(this))}
 						${this._renderDragTarget(this._renderOutsideControlAction)}
 						<div slot="content-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}"></div>
