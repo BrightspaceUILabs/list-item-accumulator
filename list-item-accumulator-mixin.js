@@ -255,9 +255,9 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				<div class="${classMap(classes)}">
 					<div class="d2l-list-item-drag-shadow"></div>
 					<d2l-list-item-generic-layout>
-						${this._renderDragHandle(this._renderOutsideControl)}
+						${this._renderDragHandle(this._renderOutsideControl.bind(this))}
 						${this._renderDragTarget(this._renderOutsideControlAction)}
-						<div slot="content-action"></div>
+						<div slot="content-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}"></div>
 						<div slot="content">
 							<slot name="illustration" class="d2l-list-item-accumulator-illustration">${illustration}</slot>
 							<div class="d2l-list-item-main">
@@ -266,7 +266,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 								<slot class="d2l-body-compact" name="supporting-info">${supportingInfo}</slot>
 							</div>
 						</div>
-						<div slot="actions">
+						<div slot="actions" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">
 							<div class="d2l-list-item-actions-container">
 								<slot name="primary-action"></slot>
 								${primaryAction}
@@ -325,13 +325,19 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 	_onKeyDownMoveUp(e) {
 		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftUp);
 	}
+	_onMouseEnter() {
+		this._hovering = true;
+	}
+	_onMouseLeave() {
+		this._hovering = false;
+	}
 	async _onMoveAction(action) {
 		await this._annoucePositionChange(this.key, null, action);
 		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
 	}
 
 	_renderOutsideControl(dragHandle) {
-		return html`<div slot="outside-control">${dragHandle}</div>`;
+		return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
 	}
 	_renderReorderActions() {
 		if (!this.draggable || !this.parentNode) return nothing;
@@ -350,6 +356,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		`;
 	}
 	_renderOutsideControlAction(dragTarget) {
-		return html`<div slot="outside-control-action">${dragTarget}</div>`;
+		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
 	}
 };
