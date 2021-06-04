@@ -10,15 +10,14 @@ import { css, html } from 'lit-element/lit-element.js';
 import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
-import { langResources } from './lang';
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
 import { nothing } from 'lit-html';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 const keyCodes = Object.freeze({
 	ENTER: 13,
 	SPACE: 32
 });
-export const ListItemAccumulatorMixin = superclass => class extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(superclass))) {
+export const ListItemAccumulatorMixin = superclass => class extends ListItemDragDropMixin(RtlMixin(LocalizeDynamicMixin(superclass))) {
 	static get properties() {
 		return {
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
@@ -202,17 +201,13 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		super.styles && styles.unshift(super.styles);
 		return styles;
 	}
-	static async getLocalizeResources(langs) {
-		for (let i = 0; i < langs.length; i++) {
-			if (langResources[langs[i]]) {
-				return {
-					language: langs[i],
-					resources: langResources[langs[i]]
-				};
-			}
-		}
-		return null;
+
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
+		};
 	}
+
 	constructor() {
 		super();
 		this._dropdownId = getUniqueId();
