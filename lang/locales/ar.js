@@ -1,5 +1,5 @@
 /* eslint quotes: ["error", "double"] */
-export const en = {
+export default {
 	"actions": "الإجراءات", // Label for the actions dropdown
 	"moveDown": "تحريك لأسفل", // Reorder an item down one
 	"moveUp": "تحريك لأعلى", // Reorder an item up one
