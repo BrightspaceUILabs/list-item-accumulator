@@ -35,7 +35,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
-			await waitUntil(() => itemsWithText[0].text !== undefined, 'Element did not become ready');
+			await waitUntil(() => itemsWithText[0] !== undefined && itemsWithText[0].text !== undefined, 'Element did not become ready');
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
 		});
@@ -44,7 +44,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
-			await waitUntil(() => itemsWithText[0].text !== undefined, 'Element did not become ready');
+			await waitUntil(() => itemsWithText[0] !== undefined && itemsWithText[0].text !== undefined, 'Element did not become ready');
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
@@ -53,7 +53,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			const items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
-			await waitUntil(() => itemsWithText[0].text !== undefined, 'Element did not become ready');
+			await waitUntil(() => itemsWithText[0] !== undefined && itemsWithText[0].text !== undefined, 'Element did not become ready');
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
