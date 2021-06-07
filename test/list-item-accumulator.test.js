@@ -33,27 +33,27 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 		it('should only show "Move Down" when first item', async() => {
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
+			await waitUntil(() => items[0] !== undefined, 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
-			await waitUntil(() => itemsWithText[0] !== undefined && itemsWithText[0].text !== undefined, 'Element did not become ready');
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
 		});
 
 		it('should only show "Move Up" when last item', async() => {
 			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
+			await waitUntil(() => items[0] !== undefined, 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
-			await waitUntil(() => itemsWithText[0] !== undefined && itemsWithText[0].text !== undefined, 'Element did not become ready');
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
 
 		it('should show both actions when middle item', async() => {
 			const items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
+			await waitUntil(() => items[0] !== undefined, 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
-			await waitUntil(() => itemsWithText[0] !== undefined && itemsWithText[0].text !== undefined, 'Element did not become ready');
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
