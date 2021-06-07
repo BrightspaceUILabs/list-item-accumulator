@@ -36,6 +36,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
+			expect(items).to.be.lengthOf(1);
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
 		});
@@ -44,14 +45,16 @@ describe('d2l-labs-list-item-accumulator', () => {
 			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 
 			const itemsWithText = Array.from(items).filter(item => item.text);
+			expect(items).to.be.lengthOf(1);
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
 
 		it('should show both actions when middle item', async() => {
 			const items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
-
 			const itemsWithText = Array.from(items).filter(item => item.text);
+
+			expect(items).to.be.lengthOf(2);
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
@@ -61,6 +64,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 
 			const itemsWithText = Array.from(items).filter(item => item.text);
+			expect(items).to.be.lengthOf(0);
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
 		});
