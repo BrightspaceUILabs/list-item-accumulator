@@ -31,6 +31,8 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 			el = await fixture(basicList);
 			await elementUpdated(el);
+			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
+			await waitUntil(() =>  Array.from(items).find(item => item.text !== undefined));
 		});
 
 		it.skip('should only show "Move Down" when first item', async() => {
