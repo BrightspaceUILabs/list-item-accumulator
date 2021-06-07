@@ -1,5 +1,5 @@
 import '../list-item-accumulator.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-labs-list-item-accumulator', () => {
@@ -29,6 +29,9 @@ describe('d2l-labs-list-item-accumulator', () => {
 			const el = await fixture(basicList);
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 			const itemsWithText = Array.from(items).filter(item => item.text);
+
+			await elementUpdated(basicList);
+
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
 		});
@@ -36,6 +39,9 @@ describe('d2l-labs-list-item-accumulator', () => {
 		it('should only show "Move Up" when last item', async() => {
 			const el = await fixture(basicList);
 			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
+
+			await elementUpdated(basicList);
+
 			const itemsWithText = Array.from(items).filter(item => item.text);
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
@@ -44,6 +50,9 @@ describe('d2l-labs-list-item-accumulator', () => {
 		it('should show both actions when middle item', async() => {
 			const el = await fixture(basicList);
 			const items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
+
+			await elementUpdated(basicList);
+
 			const itemsWithText = Array.from(items).filter(item => item.text);
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
@@ -52,6 +61,9 @@ describe('d2l-labs-list-item-accumulator', () => {
 		it('should show no actions when only item in list', async() => {
 			const el = await fixture(html`<div><d2l-labs-list-item-accumulator draggable="true" key="1"></d2l-labs-list-item-accumulator></div>`);
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
+
+			await elementUpdated(basicList);
+
 			const itemsWithText = Array.from(items).filter(item => item.text);
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
