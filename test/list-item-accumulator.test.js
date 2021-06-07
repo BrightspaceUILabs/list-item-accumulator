@@ -33,14 +33,14 @@ describe('d2l-labs-list-item-accumulator', () => {
 			await elementUpdated(el);
 		});
 
-		it('should only show "Move Down" when first item', async() => {
+		it.skip('should only show "Move Down" when first item', async() => {
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Down'), 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
-		}).skip; // Safari keeps failing on this test, "items" never resolves to anything
+		}); // Safari keeps failing on this test, "items" never resolves to anything
 
 		it('should only show "Move Up" when last item', async() => {
 			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
