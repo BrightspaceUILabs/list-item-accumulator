@@ -1,6 +1,6 @@
 /* eslint-disable */
 import '../list-item-accumulator.js';
-import { aTimeout, expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-labs-list-item-accumulator', () => {
@@ -34,7 +34,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 		it('should only show "Move Down" when first item', async() => {
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
-			await aTimeout(100);
+			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Down'), 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
@@ -43,7 +43,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 		it('should only show "Move Up" when last item', async() => {
 			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
-			await aTimeout(100);
+			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Up'), 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
@@ -52,7 +52,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 		it('should show both actions when middle item', async() => {
 			const items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
-			await aTimeout(100);
+			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Down'), 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
