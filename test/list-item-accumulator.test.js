@@ -1,4 +1,3 @@
-/* eslint-disable */
 import '../list-item-accumulator.js';
 import { elementUpdated, expect, fixture, html, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
