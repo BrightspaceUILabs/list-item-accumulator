@@ -1,6 +1,6 @@
 /* eslint-disable */
 import '../list-item-accumulator.js';
-import { aTimeout, elementUpdated, expect, fixture, html, waitUntil } from '@open-wc/testing';
+import { elementUpdated, expect, fixture, html, waitUntil } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-labs-list-item-accumulator', () => {
@@ -78,5 +78,4 @@ describe('d2l-labs-list-item-accumulator', () => {
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
 		});
 	});
-
 });
