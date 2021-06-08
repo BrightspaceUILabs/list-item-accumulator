@@ -43,7 +43,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
-		}); // Safari keeps failing on this test, "items" never resolves to anything
+		});
 
 		it('should only show "Move Up" when last item', async() => {
 			let items;
