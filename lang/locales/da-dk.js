@@ -1,5 +1,5 @@
 /* eslint quotes: ["error", "double"] */
-export const en = {
+export default {
 	"actions": "Handlinger", // Label for the actions dropdown
 	"moveDown": "Flyt ned", // Reorder an item down one
 	"moveUp": "Flyt op", // Reorder an item up one

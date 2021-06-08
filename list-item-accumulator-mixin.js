@@ -10,15 +10,14 @@ import { css, html } from 'lit-element/lit-element.js';
 import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
-import { langResources } from './lang';
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
 import { nothing } from 'lit-html';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 const keyCodes = Object.freeze({
 	ENTER: 13,
 	SPACE: 32
 });
-export const ListItemAccumulatorMixin = superclass => class extends ListItemDragDropMixin(RtlMixin(LocalizeMixin(superclass))) {
+export const ListItemAccumulatorMixin = superclass => class extends ListItemDragDropMixin(RtlMixin(LocalizeDynamicMixin(superclass))) {
 	static get properties() {
 		return {
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
@@ -202,17 +201,13 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		super.styles && styles.unshift(super.styles);
 		return styles;
 	}
-	static async getLocalizeResources(langs) {
-		for (let i = 0; i < langs.length; i++) {
-			if (langResources[langs[i]]) {
-				return {
-					language: langs[i],
-					resources: langResources[langs[i]]
-				};
-			}
-		}
-		return null;
+
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
+		};
 	}
+
 	constructor() {
 		super();
 		this._dropdownId = getUniqueId();
@@ -232,6 +227,55 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
 		return nodes.length === 1 ? nodes[0] === this : false;
 	}
+
+	_getActions() {
+		this._getSlottedPrimaryAction();
+		this._getSlottedSecondaryActions();
+	}
+	_getSlottedPrimaryAction() {
+		const primary = this.shadowRoot.querySelector('slot[name="primary-action"]');
+		if (primary) {
+			const actions = primary.assignedNodes({flatten: true});
+			if (actions) this._primaryAction = actions[0];
+		} else if (primary.nextElementSibling.id === this._dropdownButtonId) {
+			this._primaryAction = primary.nextElementSibling;
+		}
+	}
+	_getSlottedSecondaryActions() {
+		const secondary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
+		if (secondary) {
+			const actions = secondary.assignedNodes({flatten: true});
+			if (actions.length) this._hasSecondaryActions = true;
+		} else if (secondary.nextElementSibling) {
+			this._hasSecondaryActions = true;
+		}
+	}
+	_onClickMoveDown() {
+		this._onMoveAction(dropLocation.shiftDown);
+	}
+	_onClickMoveUp() {
+		this._onMoveAction(dropLocation.shiftUp);
+	}
+	_onClickPrimaryMenuItem() {
+		this._primaryAction.click();
+	}
+	_onKeyDownMoveDown(e) {
+		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftDown);
+	}
+	_onKeyDownMoveUp(e) {
+		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftUp);
+	}
+	_onMouseEnter() {
+		this._hovering = true;
+	}
+	_onMouseLeave() {
+		this._hovering = false;
+	}
+	async _onMoveAction(action) {
+		await this._annoucePositionChange(this.key, null, action);
+		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
+	}
+
 	_renderListItem({illustration, title, secondary, supportingInfo, primaryAction, secondaryAction} = {}) {
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
@@ -288,56 +332,12 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker class="d2l-list-item-accumulator-bottom-marker"></d2l-list-item-placement-marker>`)}
 		`;
 	}
-	_getActions() {
-		this._getSlottedPrimaryAction();
-		this._getSlottedSecondaryActions();
-	}
-	_getSlottedPrimaryAction() {
-		const primary = this.shadowRoot.querySelector('slot[name="primary-action"]');
-		if (primary) {
-			const actions = primary.assignedNodes({flatten: true});
-			if (actions) this._primaryAction = actions[0];
-		} else if (primary.nextElementSibling.id === this._dropdownButtonId) {
-			this._primaryAction = primary.nextElementSibling;
-		}
-	}
-	_getSlottedSecondaryActions() {
-		const secondary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
-		if (secondary) {
-			const actions = secondary.assignedNodes({flatten: true});
-			if (actions.length) this._hasSecondaryActions = true;
-		} else if (secondary.nextElementSibling) {
-			this._hasSecondaryActions = true;
-		}
-	}
-	_onClickMoveDown() {
-		this._onMoveAction(dropLocation.shiftDown);
-	}
-	_onClickMoveUp() {
-		this._onMoveAction(dropLocation.shiftUp);
-	}
-	_onClickPrimaryMenuItem() {
-		this._primaryAction.click();
-	}
-	_onKeyDownMoveDown(e) {
-		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftDown);
-	}
-	_onKeyDownMoveUp(e) {
-		(e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) && this._onMoveAction(dropLocation.shiftUp);
-	}
-	_onMouseEnter() {
-		this._hovering = true;
-	}
-	_onMouseLeave() {
-		this._hovering = false;
-	}
-	async _onMoveAction(action) {
-		await this._annoucePositionChange(this.key, null, action);
-		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
-	}
 
 	_renderOutsideControl(dragHandle) {
 		return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
+	}
+	_renderOutsideControlAction(dragTarget) {
+		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
 	}
 	_renderReorderActions() {
 		if (!this.draggable || !this.parentNode) return nothing;
@@ -355,7 +355,5 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			${downAction}
 		`;
 	}
-	_renderOutsideControlAction(dragTarget) {
-		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
-	}
+
 };

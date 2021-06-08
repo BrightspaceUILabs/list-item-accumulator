@@ -2,7 +2,7 @@
     "name": "listItemAccumulator",
     "source_dir": "/lang/locales",
     "source_match": "en\\.js$",
-    "output_file_path": "/lang/locales/%LANG%.json",
+    "output_file_path": "/lang/locales/%LANG%.js",
     "parser_plugin": {
       "plugin": "parse_js"
     },
