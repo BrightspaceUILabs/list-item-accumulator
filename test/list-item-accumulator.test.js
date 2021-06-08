@@ -33,7 +33,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			await elementUpdated(el);
 		});
 
-		it.skip('should only show "Move Down" when first item', async() => {
+		it('should only show "Move Down" when first item', async() => {
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Down'), 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
@@ -42,7 +42,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.be.undefined;
 		}); // Safari keeps failing on this test, "items" never resolves to anything
 
-		it.skip('should only show "Move Up" when last item', async() => {
+		it('should only show "Move Up" when last item', async() => {
 			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Up'), 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
@@ -51,7 +51,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
 
-		it.skip('should show both actions when middle item', async() => {
+		it('should show both actions when middle item', async() => {
 			const items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
 			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Down'), 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
@@ -60,7 +60,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 			expect(itemsWithText.find(item => item.text === 'Move Up')).to.exist;
 		});
 
-		it.skip('should show no actions when only item in list', async() => {
+		it('should show no actions when only item in list', async() => {
 			const el = await fixture(html`<div><d2l-labs-list-item-accumulator draggable="true" key="1"></d2l-labs-list-item-accumulator></div>`);
 			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 
