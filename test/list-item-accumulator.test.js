@@ -46,8 +46,11 @@ describe('d2l-labs-list-item-accumulator', () => {
 		}); // Safari keeps failing on this test, "items" never resolves to anything
 
 		it('should only show "Move Up" when last item', async() => {
-			const items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
-			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Up'), 'Element did not become ready');
+			let items;
+			await waitUntil(() =>  {
+				items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
+				return Array.from(items).find(item => item.text === 'Move Up');
+			}, 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.be.undefined;
@@ -55,8 +58,11 @@ describe('d2l-labs-list-item-accumulator', () => {
 		});
 
 		it('should show both actions when middle item', async() => {
-			const items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
-			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Down'), 'Element did not become ready');
+			let items;
+			await waitUntil(() =>  {
+				items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
+				return Array.from(items).find(item => item.text === 'Move Down');
+			}, 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
