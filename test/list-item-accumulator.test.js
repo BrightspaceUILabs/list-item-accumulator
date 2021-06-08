@@ -34,8 +34,11 @@ describe('d2l-labs-list-item-accumulator', () => {
 		});
 
 		it('should only show "Move Down" when first item', async() => {
-			const items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
-			await waitUntil(() =>  Array.from(items).find(item => item.text === 'Move Down'), 'Element did not become ready');
+			let items;
+			await waitUntil(() =>  {
+				items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
+				return Array.from(items).find(item => item.text === 'Move Down');
+			}, 'Element did not become ready');
 			const itemsWithText = Array.from(items).filter(item => item.text);
 
 			expect(itemsWithText.find(item => item.text === 'Move Down')).to.exist;
