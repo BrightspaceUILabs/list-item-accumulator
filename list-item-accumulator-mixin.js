@@ -30,14 +30,14 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		const styles = [ bodyStandardStyles, bodySmallStyles, bodyCompactStyles, css`
 			:host {
 				display: block;
-				pointer-events:all;
 				margin: -0.4rem 0;
+				pointer-events: all;
 			}
 			:host([_tooltip-showing]),
-			:host([_dropdown-open]){
+			:host([_dropdown-open]) {
 				z-index: 10;
 			}
-			:host([_hovering]){
+			:host([_hovering]) {
 				z-index: 9;
 			}
 			:host([dragging]) d2l-list-item-generic-layout {
@@ -77,9 +77,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 				display: block;
 			}
-			[slot="outside-control"] {
-				width: 1.4rem;
-			}
 			.d2l-list-item-drag-shadow {
 				border-radius: 6px;
 				display: block;
@@ -102,6 +99,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			}
 			[slot="outside-control"] {
 				display: flex;
+				width: 1.4rem;
 				z-index: 4;
 			}
 			d2l-list-item-drag-handle {
@@ -120,13 +118,13 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			.d2l-list-item-accumulator-illustration * {
+				border-radius: 6px 0 0 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
 				max-height: 6rem;
-				width: 4.2rem;
-				overflow: hidden;
-				border-radius: 6px 0 0 6px;
 				object-fit: cover;
+				overflow: hidden;
+				width: 4.2rem;
 			}
 			[slot="content"] ::slotted([slot="supporting-info"]) {
 				color: var(--d2l-color-celestine);
@@ -202,18 +200,25 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		return styles;
 	}
 
-	static get localizeConfig() {
-		return {
-			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
-		};
-	}
-
 	constructor() {
 		super();
 		this._dropdownId = getUniqueId();
 		this._dropdownButtonId = getUniqueId();
 		this._primaryAction = null;
 	}
+
+	get isOnlyChild() {
+		if (!this.parentNode) return nothing;
+		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
+		return nodes.length === 1 ? nodes[0] === this : false;
+	}
+
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
+		};
+	}
+
 	firstUpdated(changedProperties) {
 		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
 		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
@@ -221,11 +226,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
 		this._getActions();
 		super.firstUpdated(changedProperties);
-	}
-	get isOnlyChild() {
-		if (!this.parentNode) return nothing;
-		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
-		return nodes.length === 1 ? nodes[0] === this : false;
 	}
 
 	_getActions() {

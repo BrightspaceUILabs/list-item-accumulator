@@ -16,8 +16,8 @@ class DemoAccumulatorUsage extends LitElement {
 	static get styles() {
 		return css`
 			:host {
-				display: block;
 				background-color: var(--d2l-color-sylvite);
+				display: block;
 			}
 		`;
 	}

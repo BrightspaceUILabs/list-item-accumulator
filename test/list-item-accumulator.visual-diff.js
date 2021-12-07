@@ -1,9 +1,9 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import puppeteer from 'puppeteer';
+import { VisualDiff } from '@brightspace-ui/visual-diff';
 
 describe('d2l-labs-list-item-accumulator', () => {
 
-	const visualDiff = new VisualDiff('list-item-accumulator', __dirname);
+	const visualDiff = new VisualDiff('list-item-accumulator', import.meta.url);
 
 	let browser, page;
 
