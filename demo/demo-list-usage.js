@@ -2,9 +2,9 @@ import '../list-item-accumulator.js';
 import '@brightspace-ui/core/components/list/list.js';
 import '@brightspace-ui/core/components/menu/menu-item.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { ifDefined } from 'lit-html/directives/if-defined';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
-import { repeat } from 'lit-html/directives/repeat';
+import { repeat } from 'lit-html/directives/repeat.js';
 
 class DemoAccumulatorUsage extends LitElement {
 	static get properties() {
