@@ -7,9 +7,10 @@ import '@brightspace-ui/core/components/menu/menu.js';
 import '@brightspace-ui/core/components/menu/menu-item.js';
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
-import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { dropLocation, } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
+import { ListItemMixin } from '@brightspace-ui/core/components/list/list-item-mixin.js';
 import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
 import { nothing } from 'lit-html';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
@@ -17,7 +18,8 @@ const keyCodes = Object.freeze({
 	ENTER: 13,
 	SPACE: 32
 });
-export const ListItemAccumulatorMixin = superclass => class extends ListItemDragDropMixin(RtlMixin(LocalizeDynamicMixin(superclass))) {
+
+export const ListItemAccumulatorMixin = superclass => class extends ListItemMixin(RtlMixin(LocalizeDynamicMixin(superclass))) {
 	static get properties() {
 		return {
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
@@ -30,52 +32,30 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		const styles = [ bodyStandardStyles, bodySmallStyles, bodyCompactStyles, css`
 			:host {
 				display: block;
-				margin: -0.4rem 0;
-				pointer-events: all;
+				pointer-events:all;
 			}
 			:host([_tooltip-showing]),
-			:host([_dropdown-open]) {
+			:host([_dropdown-open]){
 				z-index: 10;
 			}
-			:host([_hovering]) {
+			:host([_hovering]){
 				z-index: 9;
 			}
-			:host([dragging]) d2l-list-item-generic-layout {
-				opacity: 0.3;
-			}
-			:host([draggable]) .d2l-bordered-container {
-				padding: 0.6rem 0.7rem 0.6rem 0.25rem;
-			}
-			:host([draggable][dir="rtl"]) .d2l-bordered-container {
-				padding: 0.6rem 0.25rem 0.7rem 0.6rem;
-			}
 			.d2l-bordered-container {
-				border: 1px solid transparent;
-				border-radius: 6px;
-				padding: 0.6rem 0.7rem;
 				position: relative;
-				transform: rotate(1deg);
-			}
-			.d2l-list-item-drag-image {
-				transform: rotate(-1deg);
-			}
-			.d2l-list-item-accumulator-top-marker {
-				margin-top: 0.2rem;
-			}
-			.d2l-list-item-accumulator-bottom-marker {
-				margin-top: -0.8rem;
-			}
-			:host([draggable]) .d2l-list-item-drag-image {
-				transform: rotate(-1deg);
 			}
 			:host(:not([dragging])) .d2l-hovering {
 				border-color: var(--d2l-color-mica);
 			}
+
 			:host(:not([dragging])) .d2l-hovering .d2l-list-item-drag-shadow {
 				animation-duration: 2s;
 				animation-name: showBoxShadowDelay;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 				display: block;
+			}
+			[slot="outside-control"] {
+				width: 1.4rem;
 			}
 			.d2l-list-item-drag-shadow {
 				border-radius: 6px;
@@ -99,7 +79,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			}
 			[slot="outside-control"] {
 				display: flex;
-				width: 1.4rem;
 				z-index: 4;
 			}
 			d2l-list-item-drag-handle {
@@ -112,92 +91,51 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			}
 			[slot="content-action"] {
 				background: white;
-				border: 1px solid var(--d2l-color-mica);
-				border-radius: 6px;
 				z-index: 1;
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			.d2l-list-item-accumulator-illustration * {
-				border-radius: 6px 0 0 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
 				max-height: 6rem;
-				object-fit: cover;
+				max-width: 9rem;
 				overflow: hidden;
-				width: 4.2rem;
+				border-radius: 6px 6px 6px 6px;
+				object-fit: cover;
 			}
 			[slot="content"] ::slotted([slot="supporting-info"]) {
 				color: var(--d2l-color-celestine);
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
 			:host([dir="rtl"]) .d2l-list-item-accumulator-illustration * {
-				border-radius: 0 6px 6px 0;
+				border-radius: 6px 6px 6px 6px;
 			}
-			.d2l-body-small {
-				margin: 0;
-			}
-			.d2l-list-item-main {
-				align-content: center;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				margin-left: 0.9rem;
-				padding: 0.4rem 0;
-			}
-			:host([dir="rtl"]) .d2l-list-item-main {
-				margin-left: 0;
-				margin-right: 0.9rem;
-			}
+
 			[slot="actions"] {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 			}
-			.d2l-list-item-actions-container {
-				display: flex;
-				margin-right: 0.8rem;
+			.d2l-list-item-drag-drop-grid {
+				display: grid;
+				grid-template-columns: 100%;
+				grid-template-rows: 1rem 1fr 1fr 1rem;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				width: 100%;
+				z-index: 100;
 			}
-			:host([dir="rtl"]) .d2l-list-item-actions-container {
-				margin-left: 0.8rem;
-				margin-right: 0;
-			}
-			::slotted([slot="primary-action"]) {
-				display: none;
-			}
-			@keyframes showBoxShadowDelay {
-				0%, 85% {
-					border-color: var(--d2l-color-mica);
-					box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.19);
-				}
-				100% {
-					border-color: transparent;
-					box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-				}
-			}
-			@media screen and (min-width: 615px) {
-				[slot="content"] ::slotted([slot="illustration"]),
-				.d2l-list-item-accumulator-illustration * {
-					height: 4.5rem;
-					width: 8.6rem;
-				}
-				[slot="content"] {
-					min-height: 4.2rem;
-				}
-				[slot="content"] ::slotted([slot="supporting-info"]) {
-					color: var(--d2l-color-celestine);
-					height: 1.2rem;
-					overflow: hidden;
-				}
-				.d2l-primary-action-mobile {
-					display: none;
-				}
-				::slotted([slot="primary-action"]) {
-					display: inline-block;
-				}
-			}
+
 		`];
 		super.styles && styles.unshift(super.styles);
 		return styles;
+	}
+
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
+		};
 	}
 
 	constructor() {
@@ -211,21 +149,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		if (!this.parentNode) return nothing;
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
 		return nodes.length === 1 ? nodes[0] === this : false;
-	}
-
-	static get localizeConfig() {
-		return {
-			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
-		};
-	}
-
-	firstUpdated(changedProperties) {
-		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
-		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
-		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
-		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
-		this._getActions();
-		super.firstUpdated(changedProperties);
 	}
 
 	_getActions() {
@@ -333,12 +256,12 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		`;
 	}
 
-	_renderOutsideControl(dragHandle) {
-		return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
-	}
-	_renderOutsideControlAction(dragTarget) {
-		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
-	}
+	// _renderOutsideControl(dragHandle) {
+	// 	return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
+	// }
+	// _renderOutsideControlAction(dragTarget) {
+	// 	return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
+	// }
 	_renderReorderActions() {
 		if (!this.draggable || !this.parentNode) return nothing;
 		const parent = this.parentNode;
