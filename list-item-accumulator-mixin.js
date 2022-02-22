@@ -145,12 +145,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 		this._primaryAction = null;
 	}
 
-	static get localizeConfig() {
-		return {
-			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
-		};
-	}
-
 	get isOnlyChild() {
 		if (!this.parentNode) return nothing;
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
