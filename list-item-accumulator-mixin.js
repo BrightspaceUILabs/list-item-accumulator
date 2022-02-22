@@ -32,13 +32,13 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 		const styles = [ bodyStandardStyles, bodySmallStyles, bodyCompactStyles, css`
 			:host {
 				display: block;
-				pointer-events:all;
+				pointer-events: all;
 			}
 			:host([_tooltip-showing]),
-			:host([_dropdown-open]){
+			:host([_dropdown-open]) {
 				z-index: 10;
 			}
-			:host([_hovering]){
+			:host([_hovering]) {
 				z-index: 9;
 			}
 			.d2l-bordered-container {
@@ -55,7 +55,9 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 				display: block;
 			}
 			[slot="outside-control"] {
+				display: flex;
 				width: 1.4rem;
+				z-index: 4;
 			}
 			.d2l-list-item-drag-shadow {
 				border-radius: 6px;
@@ -77,10 +79,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 				margin: -0.6rem -0.25rem -0.7rem -0.6rem;
 				z-index: 3;
 			}
-			[slot="outside-control"] {
-				display: flex;
-				z-index: 4;
-			}
 			d2l-list-item-drag-handle {
 				justify-self: middle;
 			}
@@ -95,13 +93,13 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			.d2l-list-item-accumulator-illustration * {
+				border-radius: 6px 6px 6px 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
 				max-height: 6rem;
 				max-width: 9rem;
-				overflow: hidden;
-				border-radius: 6px 6px 6px 6px;
 				object-fit: cover;
+				overflow: hidden;
 			}
 			[slot="content"] ::slotted([slot="supporting-info"]) {
 				color: var(--d2l-color-celestine);
@@ -132,12 +130,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 		return styles;
 	}
 
-	static get localizeConfig() {
-		return {
-			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
-		};
-	}
-
 	constructor() {
 		super();
 		this._dropdownId = getUniqueId();
@@ -149,6 +141,12 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 		if (!this.parentNode) return nothing;
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
 		return nodes.length === 1 ? nodes[0] === this : false;
+	}
+
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
+		};
 	}
 
 	_getActions() {
