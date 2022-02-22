@@ -145,6 +145,12 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 		this._primaryAction = null;
 	}
 
+	static get localizeConfig() {
+		return {
+			importFunc: async lang => (await import(`./lang/locales/${lang}.js`)).default
+		};
+	}
+
 	get isOnlyChild() {
 		if (!this.parentNode) return nothing;
 		const nodes = this.parentNode.querySelectorAll('d2l-labs-list-item-accumulator');
@@ -256,12 +262,6 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 		`;
 	}
 
-	// _renderOutsideControl(dragHandle) {
-	// 	return html`<div slot="outside-control" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragHandle}</div>`;
-	// }
-	// _renderOutsideControlAction(dragTarget) {
-	// 	return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
-	// }
 	_renderReorderActions() {
 		if (!this.draggable || !this.parentNode) return nothing;
 		const parent = this.parentNode;
