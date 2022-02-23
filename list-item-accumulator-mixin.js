@@ -149,6 +149,11 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemMixi
 		};
 	}
 
+	firstUpdated(changedProperties) {
+		this._getActions();
+		super.firstUpdated(changedProperties);
+	}
+
 	_getActions() {
 		this._getSlottedPrimaryAction();
 		this._getSlottedSecondaryActions();
