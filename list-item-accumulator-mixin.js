@@ -8,7 +8,7 @@ import '@brightspace-ui/core/components/menu/menu-item.js';
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { dropLocation, } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
+import { dropLocation } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { ListItemMixin } from '@brightspace-ui/core/components/list/list-item-mixin.js';
 import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
