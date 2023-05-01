@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: Brightspace/third-party-actions@actions/checkout
         with:
-          persist-credentials: false
+          token: ${{ secrets.RELEASE_TOKEN }}
       - name: Setup Node
         uses: Brightspace/third-party-actions@actions/setup-node
         with:
