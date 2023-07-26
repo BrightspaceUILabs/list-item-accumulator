@@ -9,6 +9,7 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '@brights
 import { css, html } from 'lit-element/lit-element.js';
 import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getComposedParent } from '@brightspace-ui/core/helpers/dom.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
 import { nothing } from 'lit-html';
@@ -92,6 +93,9 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			[slot="content"] {
 				display: flex;
 				min-height: 4.2rem;
+			}
+			[slot="outside-control-action"] ~ [slot="content"] {
+				pointer-events: none;
 			}
 			[slot="content-action"] {
 				background: white;
@@ -210,6 +214,16 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		super.firstUpdated(changedProperties);
 	}
 
+	getRootList(node) {
+		if (!node) node = this;
+		let rootList;
+		while (node) {
+			if (node.tagName === 'D2L-LIST') rootList = node;
+			node = getComposedParent(node);
+		}
+		return rootList;
+	}
+
 	_getActions() {
 		this._getSlottedPrimaryAction();
 		this._getSlottedSecondaryActions();
@@ -276,11 +290,11 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker class="d2l-list-item-accumulator-top-marker"></d2l-list-item-placement-marker>`)}
-			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<div class="${classMap(classes)}">
 					<div class="d2l-list-item-drag-shadow"></div>
 					<d2l-list-item-generic-layout>
+						${this._renderDropTarget()}
 						${this._renderDragHandle(this._renderOutsideControl.bind(this))}
 						${this._renderDragTarget(this._renderOutsideControlAction)}
 						<div slot="content-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}"></div>
