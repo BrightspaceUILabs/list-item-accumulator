@@ -156,6 +156,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			.d2l-list-item-actions-container {
 				display: flex;
 				margin-right: 0.8rem;
+				z-index: 5;
 			}
 			:host([dir="rtl"]) .d2l-list-item-actions-container {
 				margin-left: 0.8rem;
