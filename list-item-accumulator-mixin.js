@@ -34,6 +34,11 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				margin: -0.4rem 0;
 				pointer-events: all;
 			}
+
+			:host(:last-of-type) {
+				margin-bottom: 0;
+			}
+
 			:host([dragging]) d2l-list-item-generic-layout {
 				opacity: 0.3;
 			}
