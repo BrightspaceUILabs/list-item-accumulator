@@ -9,6 +9,7 @@ import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '@brights
 import { css, html } from 'lit-element/lit-element.js';
 import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getComposedParent } from '@brightspace-ui/core/helpers/dom.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
 import { nothing } from 'lit-html';
@@ -33,13 +34,11 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				margin: -0.4rem 0;
 				pointer-events: all;
 			}
-			:host([_tooltip-showing]),
-			:host([_dropdown-open]) {
-				z-index: 10;
+
+			:host(:last-of-type) {
+				margin-bottom: 0;
 			}
-			:host([_hovering]) {
-				z-index: 9;
-			}
+
 			:host([dragging]) d2l-list-item-generic-layout {
 				opacity: 0.3;
 			}
@@ -54,19 +53,12 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 				border-radius: 6px;
 				padding: 0.6rem 0.7rem;
 				position: relative;
-				transform: rotate(1deg);
-			}
-			.d2l-list-item-drag-image {
-				transform: rotate(-1deg);
 			}
 			.d2l-list-item-accumulator-top-marker {
 				margin-top: 0.2rem;
 			}
 			.d2l-list-item-accumulator-bottom-marker {
 				margin-top: -0.8rem;
-			}
-			:host([draggable]) .d2l-list-item-drag-image {
-				transform: rotate(-1deg);
 			}
 			:host(:not([dragging])) .d2l-hovering {
 				border-color: var(--d2l-color-mica);
@@ -95,12 +87,10 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			}
 			[slot="outside-control-action"] {
 				margin: -0.6rem -0.25rem -0.7rem -0.6rem;
-				z-index: 3;
 			}
 			[slot="outside-control"] {
 				display: flex;
 				width: 1.4rem;
-				z-index: 4;
 			}
 			d2l-list-item-drag-handle {
 				justify-self: middle;
@@ -108,13 +98,14 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 			[slot="content"] {
 				display: flex;
 				min-height: 4.2rem;
-				z-index: 2;
+			}
+			[slot="outside-control-action"] ~ [slot="content"] {
+				pointer-events: none;
 			}
 			[slot="content-action"] {
 				background: white;
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 6px;
-				z-index: 1;
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			.d2l-list-item-accumulator-illustration * {
@@ -228,6 +219,16 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		super.firstUpdated(changedProperties);
 	}
 
+	getRootList(node) {
+		if (!node) node = this;
+		let rootList;
+		while (node) {
+			if (node.tagName === 'D2L-LIST') rootList = node;
+			node = getComposedParent(node);
+		}
+		return rootList;
+	}
+
 	_getActions() {
 		this._getSlottedPrimaryAction();
 		this._getSlottedSecondaryActions();
@@ -294,11 +295,11 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		};
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker class="d2l-list-item-accumulator-top-marker"></d2l-list-item-placement-marker>`)}
-			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<div class="${classMap(classes)}">
 					<div class="d2l-list-item-drag-shadow"></div>
 					<d2l-list-item-generic-layout>
+						${this._renderDropTarget()}
 						${this._renderDragHandle(this._renderOutsideControl.bind(this))}
 						${this._renderDragTarget(this._renderOutsideControlAction)}
 						<div slot="content-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}"></div>
