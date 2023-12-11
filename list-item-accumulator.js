@@ -1,5 +1,5 @@
 import { ListItemAccumulatorMixin } from './list-item-accumulator-mixin.js';
-import { LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit';
 
 class ListItemAccumulator extends ListItemAccumulatorMixin(LitElement) {
 	render() {

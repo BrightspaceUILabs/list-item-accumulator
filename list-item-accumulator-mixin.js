@@ -6,13 +6,12 @@ import '@brightspace-ui/core/components/list/list-item-placement-marker.js';
 import '@brightspace-ui/core/components/menu/menu.js';
 import '@brightspace-ui/core/components/menu/menu-item.js';
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html, nothing } from 'lit';
 import { dropLocation, ListItemDragDropMixin } from '@brightspace-ui/core/components/list/list-item-drag-drop-mixin.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { getComposedParent } from '@brightspace-ui/core/helpers/dom.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
-import { nothing } from 'lit-html';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 const keyCodes = Object.freeze({
 	ENTER: 13,
