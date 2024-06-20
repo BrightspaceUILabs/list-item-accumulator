@@ -235,7 +235,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 	_getSlottedPrimaryAction() {
 		const primary = this.shadowRoot.querySelector('slot[name="primary-action"]');
 		if (primary) {
-			const actions = primary.assignedNodes({flatten: true});
+			const actions = primary.assignedNodes({ flatten: true });
 			if (actions) this._primaryAction = actions[0];
 		} else if (primary.nextElementSibling.id === this._dropdownButtonId) {
 			this._primaryAction = primary.nextElementSibling;
@@ -244,7 +244,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 	_getSlottedSecondaryActions() {
 		const secondary = this.shadowRoot.querySelector('slot[name="secondary-action"]');
 		if (secondary) {
-			const actions = secondary.assignedNodes({flatten: true});
+			const actions = secondary.assignedNodes({ flatten: true });
 			if (actions.length) this._hasSecondaryActions = true;
 		} else if (secondary.nextElementSibling) {
 			this._hasSecondaryActions = true;
@@ -276,7 +276,7 @@ export const ListItemAccumulatorMixin = superclass => class extends ListItemDrag
 		this.shadowRoot.getElementById(this._dropdownButtonId).focus();
 	}
 
-	_renderListItem({illustration, title, secondary, supportingInfo, primaryAction, secondaryAction} = {}) {
+	_renderListItem({ illustration, title, secondary, supportingInfo, primaryAction, secondaryAction } = {}) {
 		const mobilePrimaryAction = this._primaryAction ? html`
 			<d2l-menu-item
 				class="d2l-primary-action-mobile"

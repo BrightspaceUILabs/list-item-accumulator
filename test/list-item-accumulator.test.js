@@ -34,7 +34,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 		it('should only show "Move Down" when first item', async() => {
 			let items;
-			await waitUntil(() =>  {
+			await waitUntil(() => {
 				items = el.firstElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 				return Array.from(items).find(item => item.text === 'Move Down');
 			}, 'Element did not become ready');
@@ -46,7 +46,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 		it('should only show "Move Up" when last item', async() => {
 			let items;
-			await waitUntil(() =>  {
+			await waitUntil(() => {
 				items = el.lastElementChild.shadowRoot.querySelectorAll('d2l-menu-item');
 				return Array.from(items).find(item => item.text === 'Move Up');
 			}, 'Element did not become ready');
@@ -58,7 +58,7 @@ describe('d2l-labs-list-item-accumulator', () => {
 
 		it('should show both actions when middle item', async() => {
 			let items;
-			await waitUntil(() =>  {
+			await waitUntil(() => {
 				items = el.querySelector(':nth-child(2)').shadowRoot.querySelectorAll('d2l-menu-item');
 				return Array.from(items).find(item => item.text === 'Move Down');
 			}, 'Element did not become ready');
