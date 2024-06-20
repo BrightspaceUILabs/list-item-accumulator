@@ -1,14 +1,3 @@
 {
-  "extends": "brightspace/lit-config",
-  "ignorePatterns": ["coverage/**/*"],
-  "parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "requireConfigFile": false
-  },
-  "globals": {
-    "Prism": false
-  },
-  "rules": {
-    "object-curly-spacing": "off"
-  }
+  "extends": "brightspace/lit-config"
 }

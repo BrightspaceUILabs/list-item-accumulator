@@ -18,11 +18,11 @@
 
 The `d2l-labs-list-item-accumulator` element for use with `d2l-list` introduces a card-based item to help users organize in a tactile fashion.
 
-![Example of draggable item](https://raw.githubusercontent.com/BrightspaceUILabs/list-item-accumulator/zina/add-drag/screenshots/draggable-dragging.png)
+![Example of draggable item](/screenshots/draggable-dragging.png)
 
 ## Installation
 
-To install from NPM:
+Install from NPM:
 
 ```shell
 npm install @brightspace-ui-labs/list-item-accumulator
@@ -77,39 +77,29 @@ The `primary-action` will be added to the dropdown menu for mobile devices. Clic
 |--|--|--|
 | `draggable` | `Boolean` | Whether or not the item is draggable |
 
-**Accessibility:**
-
-To make your usage of `d2l-labs-list-item-accumulator` accessible, use the following properties when applicable:
-
-| Attribute | Description |
-|--|--|
-| | |
-
-## Developing, Testing and Contributing
+## Developing and Contributing
 
 After cloning the repo, run `npm install` to install dependencies.
 
-### Linting
-
-```shell
-# eslint and lit-analyzer
-npm run lint
-
-# eslint only
-npm run lint:eslint
-```
-
 ### Testing
 
+To run the full suite of tests:
+
 ```shell
-# lint & run headless unit tests
 npm test
+```
 
-# unit tests only
-npm run test:headless
+Alternatively, tests can be selectively run:
 
-# debug or run a subset of local unit tests
-npm run test:headless:watch
+```shell
+# eslint
+npm run lint:eslint
+
+# stylelint
+npm run lint:style
+
+# unit tests
+npm run test:unit
 ```
 
 ### Visual Diff Testing
