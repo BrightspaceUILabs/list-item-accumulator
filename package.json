@@ -16,18 +16,16 @@
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:style": "stylelint \"**/*.{js,html}\"",
     "start": "web-dev-server --app-index demo/index.html --node-resolve --open --watch",
-    "test": "npm run lint && npm run test:headless",
-    "test:headless": "web-test-runner",
-    "test:headless:watch": "web-test-runner --watch"
+    "test": "npm run lint && npm run test:unit",
+    "test:unit": "d2l-test-runner"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "version": "3.0.0",
   "devDependencies": {
     "@brightspace-ui/stylelint-config": "^1",
-    "@open-wc/testing": "^3",
-    "@web/dev-server": "^0.1",
-    "@web/test-runner": "^0.13",
+    "@brightspace-ui/testing": "^1",
+    "@web/dev-server": "^0.4",
     "eslint": "^8",
     "eslint-config-brightspace": "^1",
     "stylelint": "^16"

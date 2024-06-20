@@ -1,6 +1,5 @@
 import '../list-item-accumulator.js';
-import { elementUpdated, expect, fixture, html, waitUntil } from '@open-wc/testing';
-import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { expect, fixture, html, runConstructor, waitUntil } from '@brightspace-ui/testing';
 
 describe('d2l-labs-list-item-accumulator', () => {
 
@@ -29,7 +28,6 @@ describe('d2l-labs-list-item-accumulator', () => {
 			</div>`;
 
 			el = await fixture(basicList);
-			await elementUpdated(el);
 		});
 
 		it('should only show "Move Down" when first item', async() => {
