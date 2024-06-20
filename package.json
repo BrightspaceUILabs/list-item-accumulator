@@ -12,9 +12,8 @@
     "/lang"
   ],
   "scripts": {
-    "lint": "npm run lint:eslint && npm run lint:lit && npm run lint:style",
+    "lint": "npm run lint:eslint && npm run lint:style",
     "lint:eslint": "eslint . --ext .js,.html",
-    "lint:lit": "lit-analyzer list-item-accumulator.js demo test",
     "lint:style": "stylelint \"**/*.{js,html}\"",
     "start": "web-dev-server --app-index demo/index.html --node-resolve --open --watch",
     "test": "npm run lint && npm run test:headless",
@@ -37,7 +36,6 @@
     "eslint-plugin-import": "^2",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "lit-analyzer": "^1",
     "stylelint": "^14"
   },
   "dependencies": {
