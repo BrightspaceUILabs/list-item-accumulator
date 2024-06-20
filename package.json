@@ -26,7 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7",
     "@babel/eslint-parser": "^7",
-    "@brightspace-ui/stylelint-config": "^0.3",
+    "@brightspace-ui/stylelint-config": "^1",
     "@open-wc/testing": "^3",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
@@ -36,7 +36,7 @@
     "eslint-plugin-import": "^2",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "stylelint": "^14"
+    "stylelint": "^16"
   },
   "dependencies": {
     "@brightspace-ui/core": "^3",
